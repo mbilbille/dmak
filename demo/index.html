@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Draw Me A Kanji</title>
+        <link rel="stylesheet" href="../src/dmak.css" />
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
+        <script src="http://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.2/raphael-min.js"></script>
+        <link href="//fonts.googleapis.com/css?family=Lato:100italic,100,300italic,300,400italic,400,700italic,700,900italic,900" rel="stylesheet" type="text/css">
+        <script src="../src/dmak.js"></script>
+        <script src="../src/dmakLoader.js"></script>
+        <script src="../src/jquery.dmak.js"></script>
+        <style type="text/css">
+            body {
+                font-family: 'Lato';
+                text-align: center;
+            }
+            #sample-btn button {
+                background-color: #EDEDED;
+                border: 1px solid #BBB;
+                font-size: 30px;
+                height: 50px;
+                width: 50px;
+                cursor: pointer;
+            }
+            #sample-btn button:hover {
+                color: #F92672;
+                border-bottom-width: 2px;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="draw"></div>
+        <div id="sample-btn">
+            <button id="p">‹</button>
+            <button id="s" style="display:none;">■</button>
+            <button id="g">□</button>
+            <button id="n">›</button>
+            <button id="r">›</button>
+        </div>
+        <script>
+            $(function() {
+                $("#draw").drawMeAKanji('電車');
+                $("#sample-btn button").on("click", function(e) {
+                    e.preventDefault();
+                    switch($(this).attr("id")) {
+                        case 'p': $('#draw').drawMeAKanji('rewind', 1);
+                            break;
+                        case 's': $('#draw').drawMeAKanji('pause');
+                            $(this).toggle();
+                            $("#g").toggle();
+                            break;
+                        case 'g': $('#draw').drawMeAKanji('play');
+                            $(this).toggle();
+                            $("#s").toggle();
+                            break;
+                        case 'n': $('#draw').drawMeAKanji('forward', 1);
+                            break;
+                        case 'r': $('#draw').drawMeAKanji('reset');
+                            break;
+                    }
+                })
+            });
+        </script>
+    </body>
+</html>

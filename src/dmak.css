@@ -1,0 +1,18 @@
+/** 
+ * Draw Me a Kanji - version: 0.1
+ * CSS stylesheet
+ *
+ * https://github.com/mbilbille/drawmeakanji
+ * https://github.com/mbilbille
+ *
+ * Licensed under the MIT license.
+ */
+svg.dmak-svg {
+  border-left: 1px solid #CCCCCC;
+  border-top: 1px solid #CCCCCC;
+  border-bottom: 1px solid #CCCCCC;
+}
+
+svg.dmak-svg:last-child {
+  border-right: 1px solid #CCCCCC;
+}
