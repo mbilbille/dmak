@@ -77,15 +77,16 @@
                 return false;
             }
 
-            if(typeof end === "undefined") {
-                end = 0;
-            }
-            else if(end < 0) {
+            // Don't go behind the beginning.
+            if(this.pointer <= 0) {
                 return false;
             }
 
+            if(typeof end === "undefined") {
+                end = 0;
+            }
+
             do {
-                console.log(this.pointer, end);
                 this.pointer--;
                 this.strokes[this.pointer].object.remove();
                 this.strokes[this.pointer].object = null;
@@ -97,8 +98,6 @@
          * All the magic happens here.
          */
         render: function(end) {
-
-            console.log(this.strokes);
 
             // Cannot have two rendering process for
             // the same draw. Keep it cool.

@@ -10,7 +10,7 @@
 ;(function ( $, window, document, undefined ) {
 
     // Create the defaults once
-    var pluginName = "drawMeAKanji";
+    var pluginName = "dmak";
 
     // The actual plugin constructor
     function Plugin ( element, text, options ) {
@@ -30,19 +30,15 @@
             this.dmak.erase();
         },
         pause: function() {
-            console.log("pause");
             this.dmak.pause();
         },
         play: function() {
-            console.log("render");
             this.dmak.render();
         },
         rewind: function (x) {
-            console.log("rewind");
             this.dmak.eraseLastStrokes(x);
         },
         forward: function (x) {
-            console.log("forward");
             this.dmak.renderNextStrokes(x);
         }
     };

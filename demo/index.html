@@ -35,27 +35,27 @@
             <button id="s" style="display:none;">■</button>
             <button id="g">□</button>
             <button id="n">›</button>
-            <button id="r">›</button>
+            <button id="r">●</button>
         </div>
         <script>
             $(function() {
-                $("#draw").drawMeAKanji('電車');
+                $("#draw").dmak('電車');
                 $("#sample-btn button").on("click", function(e) {
                     e.preventDefault();
                     switch($(this).attr("id")) {
-                        case 'p': $('#draw').drawMeAKanji('rewind', 1);
+                        case 'p': $('#draw').dmak('rewind', 1);
                             break;
-                        case 's': $('#draw').drawMeAKanji('pause');
+                        case 's': $('#draw').dmak('pause');
                             $(this).toggle();
                             $("#g").toggle();
                             break;
-                        case 'g': $('#draw').drawMeAKanji('play');
+                        case 'g': $('#draw').dmak('play');
                             $(this).toggle();
                             $("#s").toggle();
                             break;
-                        case 'n': $('#draw').drawMeAKanji('forward', 1);
+                        case 'n': $('#draw').dmak('forward', 1);
                             break;
-                        case 'r': $('#draw').drawMeAKanji('reset');
+                        case 'r': $('#draw').dmak('reset');
                             break;
                     }
                 })
