@@ -155,7 +155,7 @@
     var preprocessStrokes = function(strokes) {
         var s = [];
         for(var i = 0; i < strokes.length; i++) {
-            for (j = 0; j < strokes[i].length; j++) {
+            for (var j = 0; j < strokes[i].length; j++) {
                 var length = Raphael.getTotalLength(strokes[i][j]);
                 var stroke = {
                     'char' : i,
@@ -238,7 +238,7 @@
     /**
      * Simplistic helper function for extending objects
      */
-     extend = function (defaults, replacement) {
+    var extend = function (defaults, replacement) {
         if(arguments.length != 2) {
             throw new Error('Missing arguments in extend function');
         }
