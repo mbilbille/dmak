@@ -4,8 +4,8 @@
     <meta charset="utf-8">
     <title>Draw me a kanji</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="bootstrap/css/bootstrap.css" rel="stylesheet">
-    <link href="css/flat-ui.css" rel="stylesheet">
+    <link href="flat-ui/bootstrap/css/bootstrap.css" rel="stylesheet">
+    <link href="flat-ui/css/flat-ui.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
     <link rel="shortcut icon" href="images/favicon.ico">
     <!--[if lt IE 9]>
@@ -30,27 +30,26 @@
         <div class="row">
             <div class="col-lg-10">
                 <input type="text" class="form-control input-hg mask" placeholder="Enter a word" />
+                <p><small>Try with this sample words: 日本, 東京, 漢字を書いて</small></p>
             </div>
             <div class="col-lg-2">
                 <button class="btn btn-hg btn-primary mask"><span class="fui-arrow-right"></span></button>
             </div>
-        </div>
     </div>
-    <footer><div class="container">Twitter</div></footer>
+    <footer><div class="container"></div></footer>
 
-    <script src="js/jquery-2.0.3.min.js"></script>
-    <script src="js/jquery-ui-1.10.3.custom.min.js"></script>
-    <script src="js/jquery.ui.touch-punch.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
-    <script src="js/jquery.placeholder.js"></script>
+    <script src="flat-ui/js/jquery-2.0.3.min.js"></script>
+    <script src="flat-ui/js/jquery-ui-1.10.3.custom.min.js"></script>
+    <script src="flat-ui/js/bootstrap.min.js"></script>
+    <script src="flat-ui/js/jquery.placeholder.js"></script>
     <script src="js/raphael-min.js"></script>
-    <script src="../../src/drawmeakanji.js"></script>
-    <script src="../../src/jquery.drawmeakanji.js"></script>
+    <script src="js/drawmeakanji.js"></script>
+    <script src="js/jquery.drawmeakanji.js"></script>
     <script type="text/javascript">
         $('button.btn').click(function(e) {
             e.preventDefault();
-            $("#draw").drawMeAKanji($('input.input-hg').val(), {uri: 'kanji/'});
-            setTimeout(function(){$('#draw').drawMeAKanji('play')},2000);
+            $("#draw").dmak($('input.input-hg').val(), {uri: 'kanji/'});
+            setTimeout(function(){$('#draw').dmak('play')},2000);
             $('.logo').toggleClass('flip');
         });
     </script>
