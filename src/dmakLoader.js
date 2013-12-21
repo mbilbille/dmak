@@ -1,13 +1,3 @@
-/** 
- * Draw Me a Kanji - version: 0.1
- * Core file
- *
- * https://github.com/mbilbille/drawmeakanji
- * https://github.com/mbilbille
- *
- * Licensed under the MIT license.
- */
-
 // Create a safe reference to the DrawMeAKanji object for use below.
 var dmakLoader = function(uri) {
     this.uri     = uri;
