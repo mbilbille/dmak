@@ -72,12 +72,13 @@ header {
 .wrap-draw {
   background-color: #EDEFF1;
   border-radius: 6px;
+  text-align: center;
 }
 
 svg {
-  border-left: 1px solid #BBB;
-  border-top: 1px solid #BBB;
-  border-bottom: 1px solid #BBB;
+  border-left: 1px solid #BAC1C8;
+  border-top: 1px solid #BAC1C8;
+  border-bottom: 1px solid #BAC1C8;
   background-color: #FEFEFE;
 }
 

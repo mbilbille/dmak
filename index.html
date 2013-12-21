@@ -27,10 +27,10 @@
         <div class="row">
             <div class="col-lg-10">
                 <input type="text" class="form-control input-hg mask" placeholder="Enter a word" />
-                <p><small>Try with this sample words: 日本, 東京, 漢字を書いて</small></p>
+                <p id="sample-words"><small>Try with this sample words: <span class="btn btn-xs btn-primary">日本</span> <span class="btn btn-xs btn-primary">東京</span> <span class="btn btn-xs btn-primary">漢字を書いて</span></small></p>
             </div>
             <div class="col-lg-2">
-                <button class="btn btn-hg btn-primary mask"><span class="fui-arrow-right"></span></button>
+                <button class="btn btn-lg btn-primary mask"><span class="fui-arrow-right"></span></button>
             </div>
     </div>
     <footer><div class="container"></div></footer>
@@ -40,14 +40,26 @@
     <script src="flat-ui/js/bootstrap.min.js"></script>
     <script src="flat-ui/js/jquery.placeholder.js"></script>
     <script src="js/raphael-min.js"></script>
-    <script src="js/dmak.min.js"></script>
+    <script src="js/dmak.js"></script>
     <script src="js/jquery.dmak.min.js"></script>
     <script type="text/javascript">
         $('button.btn').click(function(e) {
             e.preventDefault();
-            $("#draw").dmak($('input.input-hg').val(), {uri: 'kanji/'});
+            $("#draw").dmak($('input.input-hg').val(), {
+                uri: 'kanji/',
+                stroke: {
+                    attr : {
+                        'active': '#E74C3C',
+                        'stroke': '#BAC1C8',
+                    }
+                }
+            });
             setTimeout(function(){$('#draw').dmak('play')},2000);
             $('.logo').toggleClass('flip');
+        });
+        $("#sample-words span").click(function(e){
+            e.preventDefault();
+            $('input.input-hg').val($(this).html());
         });
     </script>
 </body>
