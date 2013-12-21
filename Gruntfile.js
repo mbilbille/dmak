@@ -20,8 +20,10 @@ module.exports = function(grunt) {
         // Concat definitions
         concat: {
             dist: {
-                src: ["src/dmak.js", "src/dmakLoader.js"],
-                dest: "dist/dmak.js"
+                files : {
+                    "dist/dmak.js" : ["src/dmak.js", "src/dmakLoader.js"],
+                    "dist/jquery.dmak.js" : ["src/jquery.dmak.js"],
+                }
             },
             options: {
                 banner: "<%= meta.banner %>",
@@ -39,8 +41,10 @@ module.exports = function(grunt) {
         // Minify definitions
         uglify: {
             my_target: {
-                src: ["dist/dmak.js"],
-                dest: "dist/dmak.min.js"
+                files: {
+                    "dist/dmak.min.js" : "dist/dmak.js",
+                    "dist/jquery.dmak.min.js" : "dist/jquery.dmak.js",
+                }
             },
             options: {
                 banner: "<%= meta.banner %>"
