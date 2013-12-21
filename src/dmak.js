@@ -35,7 +35,7 @@
             attr : {
                 'active': '#F92672',
                 'stroke' : "#272822",
-                'stroke-width' : 4,
+                'stroke-width' : 3,
                 'stroke-linecap' : 'round',
                 'stroke-linejoin' : 'round'
             }
@@ -245,10 +245,13 @@
 
         var result = defaults;
         for(var key in replacement) {
-            if(replacement.hasOwnProperty(key)) {
+            if(typeof result[key] === 'object') {
+                result[key] = extend(result[key], replacement[key]);
+            } else if(result.hasOwnProperty(key)) {
                 result[key] = replacement[key];
             }
         }
+        
         
         return result;
     };
