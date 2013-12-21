@@ -1,0 +1,87 @@
+body {
+  background: url(../images/background.png) repeat;
+}
+
+.mask {
+  -webkit-mask-image: url(../images/mask.png);
+  -o-mask-image: url(../images/mask.png);
+  -moz-mask-image: url(../images/mask.png);
+  -ms-mask-image: url(../images/mask.png);
+  mask-image: url(../images/mask.png);
+}
+
+header {
+  text-align: center;
+  margin-top: 40px;
+}
+
+.emboss {
+  font-weight: bolder;
+  text-shadow: 1px 1px #C0392B, 
+  2px 2px #C0392B, 
+  3px 3px #C0392B,
+  4px 4px #C0392B;
+  text-transform: uppercase;
+}
+
+.logo {
+  font-family: Meiryo,"MS PGothic",sans-serif;
+  margin: 20px 0;
+  font-size: 51px;
+  font-weight: bolder;
+  border: 10px solid #E74C3C;
+  border-radius: 75px;
+  display: inline-block;
+  padding: 17px;
+  -webkit-transition: background-color 0.1s linear, -webkit-transform 1s ease;
+  -moz-transition: all 1s linear, -moz-transform 1s ease;
+  -o-transition: all 1s linear, -o-transform 1s ease;
+  -ms-transition: all 1s linear, -ms-transform 1s ease;
+  transition: all 1s linear, transform 1s ease;
+}
+
+.logo.flip {
+  color: #FFF;
+  background-color: #E74C3C;
+  border: 10px solid #C0392B;
+  cursor: pointer;
+  -moz-transform: rotate(360deg);
+  -webkit-transform: rotate(360deg);
+  -o-transform: rotate(360deg);
+  transform: rotate(360deg);
+}
+
+.input-hg, .btn-hg {
+ border-width: 3px;
+}
+
+.input-hg {
+  font-family: "Lato", Helvetica, Meiryo,"MS PGothic",sans-serif;
+  font-size: 16px;
+  font-style: italic;
+  background-color: rgba(240,240,240, 0.25);
+  border-color: #BAC1C8
+}
+
+.row {
+  margin: 0 auto;
+  padding: 40px 0;
+  width: 700px;
+  text-align: center;
+}
+
+.wrap-draw {
+  background-color: #EDEFF1;
+  border-radius: 6px;
+}
+
+svg {
+  border-left: 1px solid #BBB;
+  border-top: 1px solid #BBB;
+  border-bottom: 1px solid #BBB;
+  background-color: #FEFEFE;
+}
+
+svg:last-child {
+  border-right: 1px solid #BBB;
+}

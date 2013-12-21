@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Draw me a kanji</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="bootstrap/css/bootstrap.css" rel="stylesheet">
+    <link href="css/flat-ui.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+    <link rel="shortcut icon" href="images/favicon.ico">
+    <!--[if lt IE 9]>
+      <script src="js/html5shiv.js"></script>
+      <![endif]-->
+  </head>
+  <body>
+
+    <div class="container">
+        <header>
+            <h1 class="emboss mask">Draw me a kanji</h1>
+            <div class="logo emboss mask">漢字</div>
+        </header>
+        <div class="row wrap-draw">
+            <div id="spinner">
+                <span id="ball_1" class="spinner_ball"></span>
+                <span id="ball_2" class="spinner_ball"></span>
+                <span id="ball_3" class="spinner_ball"></span>
+            </div>
+            <div id="draw"></div>
+        </div>
+        <div class="row">
+            <div class="col-lg-10">
+                <input type="text" class="form-control input-hg mask" placeholder="Enter a word" />
+            </div>
+            <div class="col-lg-2">
+                <button class="btn btn-hg btn-primary mask"><span class="fui-arrow-right"></span></button>
+            </div>
+        </div>
+    </div>
+    <footer><div class="container">Twitter</div></footer>
+
+    <script src="js/jquery-2.0.3.min.js"></script>
+    <script src="js/jquery-ui-1.10.3.custom.min.js"></script>
+    <script src="js/jquery.ui.touch-punch.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/jquery.placeholder.js"></script>
+    <script src="js/raphael-min.js"></script>
+    <script src="../../src/drawmeakanji.js"></script>
+    <script src="../../src/jquery.drawmeakanji.js"></script>
+    <script type="text/javascript">
+        $('button.btn').click(function(e) {
+            e.preventDefault();
+            $("#draw").drawMeAKanji($('input.input-hg').val(), {uri: 'kanji/'});
+            setTimeout(function(){$('#draw').drawMeAKanji('play')},2000);
+            $('.logo').toggleClass('flip');
+        });
+    </script>
+</body>
+</html>
