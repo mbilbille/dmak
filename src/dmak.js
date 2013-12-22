@@ -15,6 +15,7 @@
             var loader = new dmakLoader(this.options.uri);
             loader.load(text, function(strokes) {
                 this.setStrokes(strokes);
+                this.options.loaded(this.strokes);
             }.bind(this));
         }
     };
@@ -47,7 +48,9 @@
                 'stroke-width' : 0.5,
                 'stroke-dasharray' : "--"
             }
-        }
+        },
+        loaded : function(){},
+        drew:  function(){}
     };
 
     dmak.fn = dmak.prototype = {
@@ -111,6 +114,7 @@
                     createStroke(that.papers[that.strokes[that.pointer].char], that.strokes[that.pointer]);
                     that.pointer++;
                     that.timeouts.shift();
+                    that.options.drew(that.pointer);
                 }, delay, this);
                 delay += this.strokes[i].duration;
                 this.timeouts.push(t);
