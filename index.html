@@ -17,20 +17,18 @@
             <div class="logo emboss mask">漢字</div>
         </header>
         <div class="row wrap-draw">
-            <div id="spinner">
-                <span id="ball_1" class="spinner_ball"></span>
-                <span id="ball_2" class="spinner_ball"></span>
-                <span id="ball_3" class="spinner_ball"></span>
-            </div>
             <div id="draw"></div>
+            <div id="slider" class="ui-slider"></div>
+            <button id="play" class="btn btn-xs btn-danger"><span class="fui-play"></span></button>
+            <button id="pause" class="btn btn-xs btn-danger"><span class="fui-pause"></span></button>
         </div>
-        <div class="row">
+        <div class="row wrap-form">
             <div class="col-lg-10">
-                <input type="text" class="form-control input-hg mask" placeholder="Enter a word" />
-                <p id="sample-words"><small>Try with this sample words: <span class="btn btn-xs btn-primary">日本</span> <span class="btn btn-xs btn-primary">東京</span> <span class="btn btn-xs btn-primary">漢字を書いて</span></small></p>
+                <input id="mytext" type="text" class="form-control input-lg mask" placeholder="Enter a word" />
+                <p id="sample-words"><small>Try with this sample words: <span class="btn btn-xs btn-danger">日本</span> <span class="btn btn-xs btn-danger">東京</span> <span class="btn btn-xs btn-danger">漢字を書いて</span></small></p>
             </div>
             <div class="col-lg-2">
-                <button class="btn btn-lg btn-primary mask"><span class="fui-arrow-right"></span></button>
+                <button id="mybtn" class="btn btn-lg btn-danger mask"><span class="fui-arrow-right"></span></button>
             </div>
     </div>
     <footer><div class="container"></div></footer>
@@ -42,26 +40,6 @@
     <script src="js/raphael-min.js"></script>
     <script src="js/dmak.min.js"></script>
     <script src="js/jquery.dmak.min.js"></script>
-    <script type="text/javascript">
-        $('button.btn').click(function(e) {
-            e.preventDefault();
-            $("#draw").dmak($('input.input-hg').val(), {
-                uri: 'kanji/',
-                stroke: {
-                    attr : {
-                        'active': '#E74C3C',
-                        'stroke': '#BAC1C8',
-                        'stroke-width': 2,
-                    }
-                }
-            });
-            setTimeout(function(){$('#draw').dmak('play')},2000);
-            $('.logo').toggleClass('flip');
-        });
-        $("#sample-words span").click(function(e){
-            e.preventDefault();
-            $('input.input-hg').val($(this).html());
-        });
-    </script>
+    <script src="js/script.js"></script>
 </body>
 </html>

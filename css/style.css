@@ -1,5 +1,19 @@
 body {
   background: url(../images/background.png) repeat;
+  color: #E74C3C;
+}
+
+.form-control {
+  color: #7F8C8D;
+  font-family: "Lato", Helvetica, Meiryo,"MS PGothic",sans-serif;
+}
+
+.form-group.focus .form-control, .form-control:focus {
+  border-color: #E74C3C;
+}
+
+.btn:focus {
+  outline: none;
 }
 
 .mask {
@@ -51,21 +65,8 @@ header {
   transform: rotate(360deg);
 }
 
-.input-hg, .btn-hg {
- border-width: 3px;
-}
-
-.input-hg {
-  font-family: "Lato", Helvetica, Meiryo,"MS PGothic",sans-serif;
-  font-size: 16px;
-  font-style: italic;
-  background-color: rgba(240,240,240, 0.25);
-  border-color: #BAC1C8
-}
-
 .row {
   margin: 0 auto;
-  padding: 40px 0;
   width: 700px;
 }
 
@@ -73,6 +74,9 @@ header {
   background-color: #EDEFF1;
   border-radius: 6px;
   text-align: center;
+  padding: 30px 20px 15px 20px;
+  margin: 15px auto;
+  visibility: hidden;
 }
 
 svg {
@@ -84,4 +88,60 @@ svg {
 
 svg:last-child {
   border-right: 1px solid #BBB;
+}
+
+#slider {
+  width: 500px;
+  margin: 0 auto;
+}
+
+.ui-slider {
+  background: #FFFFFF;
+}
+
+.ui-slider-handle:hover, .ui-slider-handle:focus {
+  background-color: #E74C3C;
+}
+
+.ui-slider-range {
+  background-color: #E74C3C;
+}
+
+.ui-slider-handle {
+  background-color: #C0392B;
+}
+
+.wrap-form{
+  margin-top: 50px;
+}
+
+.slideDown{
+  animation-name: slideDown;
+  -webkit-animation-name: slideDown;  
+
+  animation-duration: 1s; 
+  -webkit-animation-duration: 1s;
+
+  animation-timing-function: ease;  
+  -webkit-animation-timing-function: ease;  
+
+  visibility: visible !important;           
+}
+
+@keyframes slideDown {
+  0% {
+    transform: translateY(-100%);
+  }    
+  100% {
+    transform: translateY(0%);
+  }   
+}
+
+@-webkit-keyframes slideDown {
+  0% {
+    -webkit-transform: translateY(-100%);
+  }
+  100% {
+    -webkit-transform: translateY(0%);
+  } 
 }
