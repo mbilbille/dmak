@@ -24,7 +24,7 @@
 
     Plugin.prototype = {
         init: function () {
-            this.dmak = new dmak(this.text, this.options);
+            this.dmak = new Dmak(this.text, this.options);
         },
         reset: function() {
             this.dmak.erase();

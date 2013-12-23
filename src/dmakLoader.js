@@ -3,14 +3,14 @@
     "use strict"
 
     // Create a safe reference to the DrawMeAKanji object for use below.
-    var dmakLoader = function(uri) {
+    var DmakLoader = function(uri) {
         this.uri     = uri;
     };
 
     // Gather SVG data information for a given set of characters.
     // By default this action is done while instanciating the Word
     // object, but it can be skipped, see above 
-    dmakLoader.prototype.load = function (text, callback) {
+    DmakLoader.prototype.load = function (text, callback) {
         var done = 0;
         var paths = [];
         var nbChar = text.length;
@@ -61,5 +61,5 @@
         return paths;
     }
 
-    window.dmakLoader = dmakLoader;
+    window.DmakLoader = DmakLoader;
 }());

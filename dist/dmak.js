@@ -11,16 +11,16 @@
     "use strict"
 
     // Create a safe reference to the DrawMeAKanji object for use below.
-    var dmak = function(text, options) {
+    var Dmak = function(text, options) {
         this.text = text;
-        this.options  = extend(dmak.options, options);
+        this.options  = extend(Dmak.options, options);
         this.strokes = [];
         this.papers = [];
         this.pointer  = 0;
         this.timeouts = [];
 
         if(!this.options.skipLoad) {
-            var loader = new dmakLoader(this.options.uri);
+            var loader = new DmakLoader(this.options.uri);
             loader.load(text, function(strokes) {
                 this.setStrokes(strokes);
                 this.options.loaded(this.strokes);
@@ -29,9 +29,9 @@
     };
 
     // Current version.
-    dmak.VERSION = '0.1';
+    Dmak.VERSION = '0.1';
 
-    dmak.options = {
+    Dmak.options = {
         uri : '',
         skipLoad : false,
         height : 109,
@@ -58,10 +58,11 @@
             }
         },
         loaded : function(){},
+        erased : function(){},
         drew:  function(){}
     };
 
-    dmak.fn = dmak.prototype = {
+    Dmak.fn = Dmak.prototype = {
         
         setStrokes: function(strokes) {
             this.strokes = preprocessStrokes(strokes);
@@ -94,6 +95,7 @@
                 this.pointer--;
                 this.strokes[this.pointer].object.remove();
                 this.strokes[this.pointer].object = null;
+                this.options.erased(this.pointer);
             }
             while(this.pointer > end)
         },
@@ -172,7 +174,7 @@
                 var stroke = {
                     'char' : i,
                     'length' : length,
-                    'duration' : length * dmak.options.step * 1000,
+                    'duration' : length * Dmak.options.step * 1000,
                     'path' : strokes[i][j],
                     'object' : null
                 }
@@ -189,7 +191,7 @@
     var giveBirthToRaphael = function(nbChar) {
         var papers = []
         for(var i = 0; i < nbChar; i++) {
-            var paper = new Raphael(dmak.options.element, dmak.options.width + "px", dmak.options.height +"px");
+            var paper = new Raphael(Dmak.options.element, Dmak.options.width + "px", Dmak.options.height +"px");
             paper.canvas.setAttribute("class","dmak-svg");
             papers.push(paper);
         }
@@ -202,8 +204,8 @@
      */
     var showGrid = function(papers) {
         for(var i = 0; i < papers.length; i++) {
-            papers[i].path("M" + (dmak.options.width / 2) + ",0 L" + (dmak.options.width / 2) + "," + dmak.options.height).attr(dmak.options.grid.attr);
-            papers[i].path("M0," + (dmak.options.height / 2) + " L" + dmak.options.width + "," + (dmak.options.height / 2)).attr(dmak.options.grid.attr);
+            papers[i].path("M" + (Dmak.options.width / 2) + ",0 L" + (Dmak.options.width / 2) + "," + Dmak.options.height).attr(Dmak.options.grid.attr);
+            papers[i].path("M0," + (Dmak.options.height / 2) + " L" + Dmak.options.width + "," + (Dmak.options.height / 2)).attr(Dmak.options.grid.attr);
         }
     }
 
@@ -212,8 +214,8 @@
      */
     var createStroke = function(paper, stroke) {
         stroke.object = paper.path(stroke.path);
-        stroke.object.attr(dmak.options.stroke.attr);
-        if(dmak.options.stroke.animated) {
+        stroke.object.attr(Dmak.options.stroke.attr);
+        if(Dmak.options.stroke.animated) {
             animateStroke(stroke);
         }
     }
@@ -224,7 +226,7 @@
      * http://jakearchibald.com/2013/animated-line-drawing-svg/
      */
     var animateStroke = function(stroke) {
-        stroke.object.attr({'stroke' : dmak.options.stroke.attr.active});
+        stroke.object.attr({'stroke' : Dmak.options.stroke.attr.active});
         stroke.object.node.style.transition = stroke.object.node.style.WebkitTransition = 'none';
         // Set up the starting positions
         stroke.object.node.style.strokeDasharray = stroke.length + ' ' + stroke.length;
@@ -242,7 +244,7 @@
             if(stroke.object == null) {
                 return;
             }
-            stroke.object.node.style.stroke = dmak.options.stroke.attr.stroke;
+            stroke.object.node.style.stroke = Dmak.options.stroke.attr.stroke;
             stroke.object.node.style.transition = stroke.object.node.style.WebkitTransition = 'stroke 400ms ease';
         }, stroke.duration);
     };
@@ -268,7 +270,7 @@
         return result;
     };
 
-    window.dmak = dmak;
+    window.Dmak = Dmak;
 }());
 
  ;(function () {
@@ -276,14 +278,14 @@
     "use strict"
 
     // Create a safe reference to the DrawMeAKanji object for use below.
-    var dmakLoader = function(uri) {
+    var DmakLoader = function(uri) {
         this.uri     = uri;
     };
 
     // Gather SVG data information for a given set of characters.
     // By default this action is done while instanciating the Word
     // object, but it can be skipped, see above 
-    dmakLoader.prototype.load = function (text, callback) {
+    DmakLoader.prototype.load = function (text, callback) {
         var done = 0;
         var paths = [];
         var nbChar = text.length;
@@ -334,5 +336,5 @@
         return paths;
     }
 
-    window.dmakLoader = dmakLoader;
+    window.DmakLoader = DmakLoader;
 }());

@@ -32,7 +32,7 @@
 
     Plugin.prototype = {
         init: function () {
-            this.dmak = new dmak(this.text, this.options);
+            this.dmak = new Dmak(this.text, this.options);
         },
         reset: function() {
             this.dmak.erase();
@@ -48,6 +48,12 @@
         },
         forward: function (x) {
             this.dmak.renderNextStrokes(x);
+        },
+        rewindTo: function (t) {
+            this.dmak.erase(t);
+        },
+        forwardTo: function (t) {
+            this.dmak.render(t);
         }
     };
 
