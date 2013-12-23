@@ -21,32 +21,31 @@ $('#mybtn').click(function(e) {
                 $(".wrap-draw").addClass("slideDown");
                 $slider = $("#slider");
                 if ($slider.length > 0) {
-                    var value = 1;
+                    var p = 1;
                     $slider.slider({
                         min: 1,
                         max: strokes.length + 1,
                         value: 1,
                         orientation: "horizontal",
                         range: "min",
-                        start: function( event, ui ) {
-                            value = ui.value;
-                        },
-
-                        stop: function( event, ui ) {
-                            $("#draw").dmak('pause');
-                            if(ui.value - value < 0) {
-                                $("#draw").dmak('rewindTo', ui.value - 1);
+                        slide: function(event, ui) {
+                        
+                            var range = ui.value - p;
+                            if(range < 0) {
+                                $("#draw").dmak('rewind', range * -1);
                             }
                             else {
-                                $("#draw").dmak('forwardTo', ui.value - 1);
+                                console.log(range);
+                                $("#draw").dmak('forward', range);
                             }
+                            p = ui.value;
                         }
                     }).addSliderSegments($slider.slider("option").max);
                 }
             },
             erased: function(index) {
-                if($slider.slider("value") <= index) {
-                     $slider.slider( "value", index );
+                if($slider.slider("value") > index) {
+                     $slider.slider( "value", index + 1 );
                 }
             },
             drew: function(index) {
@@ -66,6 +65,14 @@ $("#play").on("click", function(e){
 
 $("#pause").on("click", function(e){
     $('#draw').dmak('pause');
+});
+
+$("#rewind").on("click", function(e){
+    $('#draw').dmak('rewind', 1);
+});
+
+$("#forward").on("click", function(e){
+    $('#draw').dmak('forward', 1);
 });
 
 $("#sample-words span").on("click", function(e){
