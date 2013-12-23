@@ -40,6 +40,12 @@
         },
         forward: function (x) {
             this.dmak.renderNextStrokes(x);
+        },
+        rewindTo: function (t) {
+            this.dmak.erase(t);
+        },
+        forwardTo: function (t) {
+            this.dmak.render(t);
         }
     };
 
