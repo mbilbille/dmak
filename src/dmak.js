@@ -50,6 +50,7 @@
             }
         },
         loaded : function(){},
+        erased : function(){},
         drew:  function(){}
     };
 
@@ -86,6 +87,7 @@
                 this.pointer--;
                 this.strokes[this.pointer].object.remove();
                 this.strokes[this.pointer].object = null;
+                this.options.erased(this.pointer);
             }
             while(this.pointer > end)
         },
