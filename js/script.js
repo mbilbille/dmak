@@ -33,21 +33,25 @@ $('#mybtn').click(function(e) {
                         },
 
                         stop: function( event, ui ) {
-                            var range = ui.value - value;
                             $("#draw").dmak('pause');
-                            if(range < 0) {
-                                $("#draw").dmak('rewind', -1 * range);
+                            if(ui.value - value < 0) {
+                                $("#draw").dmak('rewindTo', ui.value - 1);
                             }
                             else {
-                                $("#draw").dmak('forward', range);
+                                $("#draw").dmak('forwardTo', ui.value - 1);
                             }
                         }
                     }).addSliderSegments($slider.slider("option").max);
                 }
             },
+            erased: function(index) {
+                if($slider.slider("value") <= index) {
+                     $slider.slider( "value", index );
+                }
+            },
             drew: function(index) {
                 if($slider.slider("value") <= index) {
-                    $slider.slider( "value", index + 1 );
+                     $slider.slider( "value", index  + 1 );
                 }
             }
         });
