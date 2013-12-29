@@ -1,6 +1,15 @@
 body {
   background: url(../images/background.png) repeat;
+  color: #95A5A6;
+}
+
+h1 {
   color: #E74C3C;
+}
+
+.container-full {
+  margin: 0 auto;
+  width: 100%;
 }
 
 .form-control {
@@ -12,8 +21,8 @@ body {
   border-color: #E74C3C;
 }
 
-.btn:focus {
-  outline: none;
+.btn {
+  outline: none !important;
 }
 
 .mask {
@@ -22,6 +31,10 @@ body {
   -moz-mask-image: url(../images/mask.png);
   -ms-mask-image: url(../images/mask.png);
   mask-image: url(../images/mask.png);
+}
+
+#main {
+  position: relative;
 }
 
 header {
@@ -40,6 +53,7 @@ header {
 
 .logo {
   font-family: Meiryo,"MS PGothic",sans-serif;
+  color: #E74C3C;
   margin: 20px 0;
   font-size: 51px;
   font-weight: bolder;
@@ -67,11 +81,11 @@ header {
 
 .row {
   margin: 0 auto;
-  width: 700px;
+  width: 800px;
 }
 
 .wrap-draw {
-  background-color: #EDEFF1;
+  background-color: #ECF0F1;
   border-radius: 6px;
   text-align: center;
   padding: 30px 20px 15px 20px;
@@ -111,8 +125,11 @@ svg:last-child {
   background-color: #C0392B;
 }
 
+.ui-slider-segment {
+  background-color: #BDC3C7;
+}
+
 .wrap-form{
-  margin-top: 50px;
 }
 
 .slideDown{
@@ -144,4 +161,68 @@ svg:last-child {
   100% {
     -webkit-transform: translateY(0%);
   } 
+}
+
+.settings {
+  margin: 0;
+  background-color: #E74C3C;
+  color: #FFF;
+  padding: 0 0 30px 0;
+  text-align: center;
+}
+
+.settings .tile {
+  background-color: #EC7063;
+  height: 130px;
+}
+
+.settings .tile h3 {
+  opacity: 0.8;
+}
+
+.settings input[type="color"] {
+  border: none;
+  outline: none;
+  cursor: pointer;
+  height: 40px;
+  width: 40px;
+  border-radius: 5px;
+}
+
+.settings .btn-danger:focus, .settings .btn-danger:active, .settings .btn-danger.active {
+  background-color: #E74C3C;
+}
+
+footer {
+  background-color: #7F8C8D;
+  color: #FFF;
+  padding: 30px 0;
+  text-align: center;
+}
+
+footer .tile {
+  background-color: #95A5A6;
+}
+
+footer .tile.force-height {
+  min-height: 184px;
+}
+
+footer .tile-title {
+  margin-bottom: 20px;
+}
+
+footer .social-btn {
+  float: left;
+  margin-top: 0px;
+  width: 100px;
+  height: 40px;
+  text-align: center;
+  overflow: hidden;
+}
+
+.final {
+  text-transform: uppercase;
+  font-size: 12px;
+  margin: 20px;
 }
