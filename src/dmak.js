@@ -29,7 +29,6 @@
         height : 109,
         width : 109,
         step : 0.03,
-        duration : 750,
         element : 'draw',
         stroke : {
             animated : true,
@@ -111,15 +110,22 @@
             }
 
             var delay = 0;
+            var func = function(that) {
+                createStroke(that.papers[that.strokes[that.pointer].char], that.strokes[that.pointer]);
+                that.pointer++;
+                that.timeouts.shift();
+                that.options.drew(that.pointer);
+            };
+
             for (var i = this.pointer; i < end; i++) {
-                var t = setTimeout(function(that){
-                    createStroke(that.papers[that.strokes[that.pointer].char], that.strokes[that.pointer]);
-                    that.pointer++;
-                    that.timeouts.shift();
-                    that.options.drew(that.pointer);
-                }, delay, this);
+                if(delay <= 0) {
+                    func(this);
+                }
+                else {
+                    var t = setTimeout(func, delay, this);
+                    this.timeouts.push(t);
+                }
                 delay += this.strokes[i].duration;
-                this.timeouts.push(t);
             }
         },
 
