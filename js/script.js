@@ -8,6 +8,13 @@ $.fn.addSliderSegments = function (amount) {
     });
 };
 
+// Implement our own repeat method() which copies the current string a given 
+// times and returns the new string
+String.prototype.repeat = function( num )
+{
+    return new Array( num + 1 ).join( this );
+}
+
 var options = {
     step : 0.03,
     uri: 'kanji/',
