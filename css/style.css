@@ -193,15 +193,14 @@ svg:last-child {
 .settings .tile {
   background-color: #EC7063;
   height: 130px;
+  margin-bottom: 10px;
 }
 
 .settings .col-md-4 .tile {
   height: 150px;
 }
 
-
-
-.settings .tile h3 {
+.settings .tile h4, .settings .tile p {
   opacity: 0.8;
 }
 
