@@ -7,8 +7,18 @@ h1 {
   color: #E74C3C;
 }
 
+.rounded {
+  border-radius: 7px;
+}
+
+.container {
+  margin-top: 30px;
+  margin-bottom: 30px;
+}
+
 .container-full {
-  margin: 0 auto;
+  margin-left: 0;
+  margin-right: 0;
   width: 100%;
 }
 
@@ -79,11 +89,6 @@ header {
   transform: rotate(360deg);
 }
 
-.row {
-  margin: 0 auto;
-  width: 800px;
-}
-
 .wrap-draw {
   background-color: #ECF0F1;
   border-radius: 6px;
@@ -130,6 +135,8 @@ svg:last-child {
 }
 
 .wrap-form{
+  max-width: 900px;
+  margin: auto;
 }
 
 .slideDown{
@@ -163,18 +170,36 @@ svg:last-child {
   } 
 }
 
-.settings {
-  margin: 0;
-  background-color: #E74C3C;
-  color: #FFF;
-  padding: 0 0 30px 0;
+.download {
   text-align: center;
+}
+
+.download p {
+  margin: 24px 0;
+}
+
+.settings {
+  color: #FFF;
+  text-align: center;
+  background-color: #E74C3C;
+  margin-bottom: 0;
+}
+
+.settings .row {
+  margin-top: 50px;
+  margin-bottom: 50px;
 }
 
 .settings .tile {
   background-color: #EC7063;
   height: 130px;
 }
+
+.settings .col-md-4 .tile {
+  height: 150px;
+}
+
+
 
 .settings .tile h3 {
   opacity: 0.8;
@@ -193,36 +218,29 @@ svg:last-child {
   background-color: #E74C3C;
 }
 
-footer {
-  background-color: #7F8C8D;
-  color: #FFF;
-  padding: 30px 0;
-  text-align: center;
+.settings .social-btn-wrapper {
+  margin: 20px auto;
+  width: 240px;
 }
 
-footer .tile {
-  background-color: #95A5A6;
-}
-
-footer .tile.force-height {
-  min-height: 184px;
-}
-
-footer .tile-title {
-  margin-bottom: 20px;
-}
-
-footer .social-btn {
+.settings .social-btn {
   float: left;
   margin-top: 0px;
-  width: 100px;
+  width: 120px;
   height: 40px;
   text-align: center;
   overflow: hidden;
 }
 
-.final {
+footer {
+  text-align: center;
+  color: #FFF;
+  background-color: inherit;
   text-transform: uppercase;
   font-size: 12px;
-  margin: 20px;
+  padding: 20px 0;
+}
+
+footer .fui-heart {
+  margin: 0 20px;
 }

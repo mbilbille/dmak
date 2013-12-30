@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="flat-ui/bootstrap/css/bootstrap.css" rel="stylesheet">
     <link href="flat-ui/css/flat-ui.css" rel="stylesheet">
-    <link href="css/style.css" rel="stylesheet">
+    <link href="css/style.min.css" rel="stylesheet">
     <link rel="shortcut icon" href="images/favicon.ico">
 
     <script>
@@ -44,10 +44,14 @@
             </div>
         </div>
     </div>
-    <div class="container-full settings mask">
+    <div class="container download mask rounded">
         <div class="row">
-            <h3 class="emboss mask">EASY TO CUSTOMIZE <span class="fui-gear"></span></h3>
+            <a href="http://github.com/mbilbille/dmak" class="btn btn-danger btn-hg">DOWNLOAD ON GITHUB<img src="images/github-10-48.png" /></a>
+            <p>Pure JS API, shipped with an optional <strong>jQuery plugin</strong>.</p>
         </div>
+    </div>
+    <div class="container container-full settings mask">
+        <h3 class="emboss mask">EASY TO CUSTOMIZE <span class="fui-gear"></span></h3>
         <div class="row">
             <div class="col-md-3">
                 <div class="tile">
@@ -78,49 +82,58 @@
                 </div>
             </div>
         </div>
-    </div>
-    <footer class="mask">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-4">
-                    <div class="tile force-height">
-                        <h4 class="tile-title">Huge Thanks</h4>
-                        <p>to <b>KanjiVG</b> for providing a whole set of SVG files</p>
-                        <a class="btn btn-inverse btn-large btn-block" href="http://kanjivg.tagaini.net">Website</a>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="tile force-height">
-                        <h4 class="tile-title">License</h4>
-                        <p>Licensed under the MIT License.</p>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="tile force-height">
-                        <h4 class="tile-title">Free to share</h4>
-                        <div class="social-btn"><iframe src="http://ghbtns.com/github-btn.html?user=mbilbille&repo=dmak&type=watch&count=true" height="30" width="118" frameborder="0" scrolling="0" style="width:118px; height: 30px;" allowTransparency="true"></iframe></div>
-                        <div class="social-btn"><a href="https://twitter.com/share" class="twitter-share-button" data-via="mbilbille">Tweet</a>
-                            <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script></div>
-                            <div class="social-btn"><iframe src="//www.facebook.com/plugins/like.php?href=http://mbilbille.github.io/dmak/&send=false&layout=button_count&width=120&show_faces=true&font&colorscheme=light&action=like&height=20" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:120px; height:20px;" allowTransparency="true"></iframe></div>
-                            <div class="social-btn">
-                            <div class="g-plusone" data-size="medium"   data-href="http://mbilbille.github.io/dmak/"></div><script type="text/javascript">(function() {var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;po.src = 'https://apis.google.com/js/plusone.js';var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);})();</script>
-                            </div>
-                    </div>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="tile force-height">
+                    <h4 class="tile-title">Huge Thanks</h4>
+                    <p>to <b>KanjiVG</b> for providing a whole set of SVG files</p>
+                    <a class="btn btn-danger btn-large btn-block" href="http://kanjivg.tagaini.net">WEBSITE</a>
                 </div>
             </div>
-            <div class="row">
-                <p class="tile final">Matthieu Bilbille | <a href="https://github.com/mbilbille" class="btn btn-inverse btn-xs" target="_blank">github.com/mbilbille</a></p>
+            <div class="col-md-4">
+                <div class="tile force-height">
+                    <h4 class="tile-title">License</h4>
+                    <p>Licensed under the MIT License.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="tile force-height">
+                    <h4 class="tile-title">Free to share</h4>
+                    <div class="social-btn-wrapper">
+                        <div class="social-btn">
+                            <iframe src="http://ghbtns.com/github-btn.html?user=mbilbille&repo=dmak&type=watch&count=true" height="30" width="118" frameborder="0" scrolling="0" style="width:118px; height: 30px;" allowTransparency="true"></iframe>
+                        </div>
+                        <div class="social-btn">
+                            <a href="https://twitter.com/share" class="twitter-share-button" data-via="mbilbille">Tweet</a>
+                            <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+                        </div>
+                        <div class="social-btn">
+                            <iframe src="//www.facebook.com/plugins/like.php?href=http://www.drawmeakanji.com/&send=false&layout=button_count&width=120&show_faces=true&font&colorscheme=light&action=like&height=20" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:120px; height:20px;" allowTransparency="true"></iframe>        
+                        </div>
+                        <div class="social-btn">
+                            <div class="g-plusone" data-size="medium"></div>
+                            <script type="text/javascript">
+                                (function() {
+                                var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+                                po.src = 'https://apis.google.com/js/platform.js';
+                                var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+                                })();
+                            </script>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-    </footer>
+        <footer class="mask">
+            Matthieu Bilbille <span class="fui-heart"></span> <a href="https://github.com/mbilbille" class="btn btn-danger btn-xs mask" target="_blank">github.com/mbilbille</a>
+        </footer>
+    </div>
+
 
     <script src="flat-ui/js/jquery-2.0.3.min.js"></script>
     <script src="flat-ui/js/jquery-ui-1.10.3.custom.min.js"></script>
     <script src="flat-ui/js/bootstrap.min.js"></script>
     <script src="flat-ui/js/jquery.placeholder.js"></script>
-    <script src="js/raphael-min.js"></script>
-    <script src="js/dmak.min.js"></script>
-    <script src="js/jquery.dmak.min.js"></script>
-    <script src="js/script.js"></script>
+    <script src="js/script.min.js"></script>
 </body>
 </html>
