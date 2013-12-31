@@ -29,6 +29,7 @@ var options = {
         show: true,
     },
     loaded: function(strokes) {
+        $('.logo').toggleClass('flip');
         $(".wrap-draw").addClass("slideDown");
         $slider = $("#slider");
         if ($slider.length > 0) {
@@ -71,19 +72,10 @@ $(function() {
 
     var blankDrawer = $(".wrap-draw").html();
 
-    //if($("#main").height()<$(window).height()) {
-    //   $("#main").height($(window).height() - 50);
-    //}
-
-    //if($(".container.settings").height()<$(window).height()) {
-    //    $(".container.settings").height($(window).height());
-    //}
-
     $('#mybtn').click(function(e) {
         e.preventDefault();
-        $('.logo').toggleClass('flip');
             
-        if (!$('#draw').is(':empty')){
+        if ($('#draw').data("plugin_dmak")){
             $("#draw").dmak("pause");
             $('.wrap-draw').html(blankDrawer);
 

@@ -186,8 +186,8 @@ svg:last-child {
 }
 
 .settings .row {
-  margin-top: 50px;
-  margin-bottom: 50px;
+  margin-top: 80px;
+  margin-bottom: 80px;
 }
 
 .settings .tile {
@@ -200,7 +200,7 @@ svg:last-child {
   min-height: 150px;
 }
 
-.settings .tile h4, .settings .tile p {
+.settings h4, .settings h5, .settings .tile p {
   opacity: 0.8;
 }
 
