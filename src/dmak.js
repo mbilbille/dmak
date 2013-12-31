@@ -16,6 +16,9 @@
             loader.load(text, function(strokes) {
                 this.setStrokes(strokes);
                 this.options.loaded(this.strokes);
+                if(this.options.autoplay) {
+                    this.render();
+                }
             }.bind(this));
         }
     };
@@ -26,6 +29,7 @@
     Dmak.options = {
         uri : '',
         skipLoad : false,
+        autoplay : true,
         height : 109,
         width : 109,
         step : 0.03,

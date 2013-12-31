@@ -47,7 +47,8 @@ module.exports = function(grunt) {
                 }
             },
             options: {
-                banner: "<%= meta.banner %>"
+                banner: "<%= meta.banner %>",
+                report: 'gzip'
             }
         },
 
