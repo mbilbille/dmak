@@ -15,6 +15,7 @@ String.prototype.repeat = function( num )
     return new Array( num + 1 ).join( this );
 }
 
+var p;
 var options = {
     step : 0.03,
     uri: 'kanji/',
@@ -33,7 +34,7 @@ var options = {
         $(".wrap-draw").addClass("slideDown");
         $slider = $("#slider");
         if ($slider.length > 0) {
-            var p = 1;
+            p = 1;
             $slider.slider({
                 min: 1,
                 max: strokes.length + 1,
@@ -58,12 +59,14 @@ var options = {
     },
     erased: function(index) {
         if($slider.slider("value") > index) {
-           $slider.slider( "value", index + 1 );
+            p = index + 1;
+            $slider.slider( "value", p );
        }
    },
    drew: function(index) {
         if($slider.slider("value") <= index) {
-            $slider.slider( "value", index  + 1 );
+            p = index + 1;
+            $slider.slider( "value", p );
         }
     }
 };
