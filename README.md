@@ -1,4 +1,4 @@
-# Draw Me A Kanji
+# Draw Me A Kanji [![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/mbilbille/dmak/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
 
 > A funny drawer for all your Japanese writings
 
