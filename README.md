@@ -7,7 +7,7 @@
 *For the sake of simplicity, "Draw Me A Kanji" is shortened to dmak*
 
 ## Usage
-Using dmak.js is easy, a lot more easier than writing kanjis, trust me!
+Using dmak.js is easy, a lot easier than writing kanjis, trust me!
 
 **Prerequisite**  
 To simplify all the work with SVG, we use the cool JavaScript library *Raphaël* ➲ [Download](http://github.com/DmitryBaranovskiy/raphael/raw/master/raphael-min.js)  
@@ -49,7 +49,7 @@ Dmak.js comes with a whole set of options to alter the way it behaves. Here is a
 * `step` - positive integer which defines the speed of the drawing. `0.03`
 * `element` - DOM element or its ID which is going to be a parent for drawing surface. `"draw"`
 * `stroke.animated` - enable or disable stroke animation. `true`
-* `stroke.attr.active` - stroke color when the stroke is being drawn. `"#F92672"`
+* `stroke.attr.active` - currently drawn stroke color. `"#F92672"`
 * `stroke.attr.stroke` - stroke color. `"#272822"`
 * `stroke.attr.stroke-width` - stroke width in pixels. `3`
 * `stroke.attr.stroke-linecap` - ["butt", "square", "round"]. `"round`
@@ -74,8 +74,8 @@ For basic samples please refer to [demo](https://github.com/mbilbille/dmak/tree/
 
 ## Inspirations
 
-- From @jakearchibald with his great article on [Animated line drawing in SVG](http://jakearchibald.com/2013/animated-line-drawing-svg/)
-- From @akeru with his [kanjiviewer.js](https://github.com/KanjiVG/kanjivg.github.com/blob/master/js/kanjiviewer.js) library.
+- From @jakearchibald and his great article on [Animated line drawing in SVG](http://jakearchibald.com/2013/animated-line-drawing-svg/)
+- From @akeru and his [kanjiviewer.js](https://github.com/KanjiVG/kanjivg.github.com/blob/master/js/kanjiviewer.js) library.
 
 And of course a huge thanks and support to [KanjiVG](http://kanjivg.tagaini.net) for providing a whole set of SVG files.
 
