@@ -75,15 +75,21 @@ $(function() {
 
     var blankDrawer = $(".wrap-draw").html();
 
+    // Check if we have a word in the URL
+    if(window.location.hash) {
+        $("#draw").dmak(window.location.hash.substring(1), options);
+    }
+
     $('#mybtn').click(function(e) {
         e.preventDefault();
-            
+
         if ($('#draw').data("plugin_dmak")){
             $("#draw").dmak("pause");
             $('.wrap-draw').html(blankDrawer);
 
         }
-        var text = $('#mytext').val();        
+        var text = $('#mytext').val();    
+        window.location.hash = "#" + text;   
         $('#mytext').val("");
         $("#draw").dmak(text, options);
     });
