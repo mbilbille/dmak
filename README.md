@@ -79,6 +79,13 @@ For basic samples please refer to [demo](https://github.com/mbilbille/dmak/tree/
 
 And of course a huge thanks and support to [KanjiVG](http://kanjivg.tagaini.net) for providing a whole set of SVG files.
 
+## Building
+
+- Install [nodejs](http://nodejs.org/)
+- Install [grunt-cli](http://gruntjs.com/getting-started)
+- Process dependencies by running `npm install` in the repository root folder
+- Build a new release by invoking `grunt` in the repository root folder
+
 ## License
 
 *Draw Me A Kanji* (dmak.js) was created by [Matthieu Bilbille](http://github.com/mbilbille) and released under the [MIT License](http://github.com/mbilbille/dmak/blob/master/LICENSE).
