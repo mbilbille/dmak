@@ -1,5 +1,5 @@
 {
-  "name": "Draw me a kanji",
+  "name": "draw-me-a-kanji",
   "version": "0.1.0",
   "description": "A funny drawer for your Japanese writings",
   "main": "dist/dmak.min.js",
