@@ -77,7 +77,10 @@ $(function() {
 
     // Check if we have a word in the URL
     if(window.location.hash) {
-        $("#draw").dmak(window.location.hash.substring(1), options);
+        var word = window.location.hash.substring(1);
+        // Properly decode UTF8 characters
+        word = decodeURIComponent(word);
+        $("#draw").dmak(word, options);
     }
 
     $('#mybtn').click(function(e) {
