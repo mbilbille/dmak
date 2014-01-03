@@ -80,6 +80,7 @@ $(function() {
         var word = window.location.hash.substring(1);
         // Properly decode UTF8 characters
         word = decodeURIComponent(word);
+        ga('send', 'event', 'url', 'search', word);
         $("#draw").dmak(word, options);
     }
 
@@ -91,8 +92,9 @@ $(function() {
             $('.wrap-draw').html(blankDrawer);
 
         }
-        var text = $('#mytext').val();    
-        window.location.hash = "#" + text;   
+        var text = $('#mytext').val();
+        window.location.hash = "#" + text;
+        ga('send', 'event', 'input', 'search', text);
         $('#mytext').val("");
         $("#draw").dmak(text, options);
     });
