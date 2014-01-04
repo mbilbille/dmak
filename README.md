@@ -9,8 +9,8 @@
 ## Usage
 Using dmak.js is easy, a lot easier than writing kanjis, trust me!
 
-**Prerequisite**  
-To simplify all the work with SVG, we use the cool JavaScript library *Raphaël* ➲ [Download](http://github.com/DmitryBaranovskiy/raphael/raw/master/raphael-min.js)  
+**Prerequisite**
+To simplify all the work with SVG, we use the cool JavaScript library *Raphaël* ➲ [Download](http://github.com/DmitryBaranovskiy/raphael/raw/master/raphael-min.js)
 *and no worries this is the ONLY dependency.*
 
 Once you are all set, include both `raphael.js` and `dmak.js` files in your HTML file.
@@ -27,7 +27,7 @@ Up to you to use either:
 </script>
 ```
 
-#### or the jQuery plugin  
+#### or the jQuery plugin
 
 ```html
 <div id="draw"></div>
@@ -78,6 +78,14 @@ For basic samples please refer to [demo](https://github.com/mbilbille/dmak/tree/
 - From @akeru and his [kanjiviewer.js](https://github.com/KanjiVG/kanjivg.github.com/blob/master/js/kanjiviewer.js) library.
 
 And of course a huge thanks and support to [KanjiVG](http://kanjivg.tagaini.net) for providing a whole set of SVG files.
+
+## Contributing
+
+Check [CONTRIBUTING.md](https://github.com/mbilbille/dmak/tree/master/CONTRIBUTING.md)
+
+## History
+
+Check [Release](https://github.com/mbilbille/dmak/tree/master/releases) list.
 
 ## Building
 

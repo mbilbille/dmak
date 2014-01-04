@@ -1,61 +1,61 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>Draw Me A Kanji</title>
-        <link rel="stylesheet" href="../src/dmak.css" />
-        <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
-        <script src="http://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.2/raphael-min.js"></script>
-        <script src="../dist/dmak.js"></script>
-        <script src="../dist/jquery.dmak.js"></script>
-        <style type="text/css">
-            body {
-                text-align: center;
-            }
-            #sample-btn button {
-                background-color: #EDEDED;
-                border: 1px solid #BBB;
-                font-size: 30px;
-                height: 50px;
-                width: 50px;
-                cursor: pointer;
-            }
-            #sample-btn button:hover {
-                color: #F92672;
-                border-bottom-width: 2px;
-            }
-        </style>
-    </head>
-    <body>
-        <div id="draw"></div>
-        <div id="sample-btn">
-            <button id="p">‹</button>
-            <button id="s">■</button>
-            <button id="g">▶</button>
-            <button id="n">›</button>
-            <button id="r">✕</button>
-        </div>
-        <script>
-            var dmak = new Dmak('電車', {'element' : "draw"});
-            var p = document.getElementById("p");
-            p.onclick = function() {
-                dmak.eraseLastStrokes(1);
-            };
-            var s = document.getElementById("s");
-            s.onclick = function() {
-                dmak.pause();
-            };
-            var g = document.getElementById("g");
-            g.onclick = function() {
-                dmak.render();
-            };
-            var n = document.getElementById("n");
-            n.onclick = function() {
-                dmak.renderNextStrokes(1);
-            };
-            var r = document.getElementById("r");
-            r.onclick = function() {
-                dmak.erase();
-            };
-        </script>
-    </body>
+<head>
+	<title>Draw Me A Kanji</title>
+	<link rel="stylesheet" href="../src/dmak.css" />
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
+	<script src="http://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.2/raphael-min.js"></script>
+	<script src="../dist/dmak.js"></script>
+	<script src="../dist/jquery.dmak.js"></script>
+	<style type="text/css">
+		body {
+			text-align: center;
+		}
+		#sample-btn button {
+			background-color: #EDEDED;
+			border: 1px solid #BBB;
+			font-size: 30px;
+			height: 50px;
+			width: 50px;
+			cursor: pointer;
+		}
+		#sample-btn button:hover {
+			color: #F92672;
+			border-bottom-width: 2px;
+		}
+	</style>
+</head>
+<body>
+	<div id="draw"></div>
+	<div id="sample-btn">
+		<button id="p">‹</button>
+		<button id="s">■</button>
+		<button id="g">▶</button>
+		<button id="n">›</button>
+		<button id="r">✕</button>
+	</div>
+	<script>
+		var dmak = new Dmak('電車', {'element' : "draw"});
+		var p = document.getElementById("p");
+		p.onclick = function() {
+			dmak.eraseLastStrokes(1);
+		};
+		var s = document.getElementById("s");
+		s.onclick = function() {
+			dmak.pause();
+		};
+		var g = document.getElementById("g");
+		g.onclick = function() {
+			dmak.render();
+		};
+		var n = document.getElementById("n");
+		n.onclick = function() {
+			dmak.renderNextStrokes(1);
+		};
+		var r = document.getElementById("r");
+		r.onclick = function() {
+			dmak.erase();
+		};
+	</script>
+</body>
 </html>
