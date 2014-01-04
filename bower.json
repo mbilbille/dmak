@@ -1,0 +1,21 @@
+{
+  "name": "dmak",
+  "title": "Draw Me A Kanji",
+  "version": "0.1.1",
+  "homepage": "http://drawmeakanji.com",
+  "authors": [
+    "Matthieu Bilbille"
+  ],
+  "description": "A funny drawer for your Japanese writings",
+  "main": "dist/dmak.min.js",
+  "keywords": [
+    "draw",
+    "kanji",
+    "japanese"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "demo",
+    "node_modules"
+  ]
+}

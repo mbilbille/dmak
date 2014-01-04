@@ -23,7 +23,7 @@
 	"bugs": {
 		"url": "https://github.com/mbilbille/dmak/issues"
 	},
-	"homepage": "https://github.com/mbilbille/dmak",
+	"homepage": "http://drawmeakanji.com",
 	"devDependencies": {
 		"grunt": "~0.4.2",
 		"grunt-contrib-jshint": "~0.6.3",
