@@ -1,0 +1,17 @@
+body {
+    text-align: center;
+}
+
+#sample-btn button {
+    background-color: #ededed;
+    border: 1px solid #bbbbbb;
+    font-size: 30px;
+    height: 50px;
+    width: 50px;
+    cursor: pointer;
+}
+
+#sample-btn button:hover {
+    color: #f92672;
+    border-bottom-width: 2px;
+}

@@ -6,16 +6,16 @@
 	var Dmak = function (text, options) {
 		this.text = text;
 		this.options = extend(Dmak.options, options);
-		this.strokes = [];
+		this.kanjis = [];
 		this.papers = [];
 		this.pointer = 0;
 		this.timeouts = [];
 
 		if (!this.options.skipLoad) {
 			var loader = new DmakLoader(this.options.uri);
-			loader.load(text, function (strokes) {
-				this.setStrokes(strokes);
-				this.options.loaded(this.strokes);
+			loader.load(text, function (results) {
+				this.setResults(results);
+				this.options.loaded(this.kanjis);
 				if (this.options.autoplay) {
 					this.render();
 				}
@@ -44,6 +44,13 @@
 				"stroke-linejoin": "round"
 			}
 		},
+		text: {
+			visible: true,
+			attr: {
+				"font-size": "8",
+				"fill": "#272822"
+			}
+		},
 		grid: {
 			show: true,
 			attr: {
@@ -62,9 +69,9 @@
 
 	Dmak.fn = Dmak.prototype = {
 
-		setStrokes: function (strokes) {
-			this.strokes = preprocessStrokes(strokes);
-			this.papers = giveBirthToRaphael(strokes.length);
+		setResults: function (results) {
+			this.kanjis = preprocessKanjis(results);
+			this.papers = giveBirthToRaphael(results.length);
 			if (this.options.grid.show) {
 				showGrid(this.papers);
 			}
@@ -73,7 +80,7 @@
 		/**
 		 * Clean all strokes on papers.
 		 */
-		 erase: function (end) {
+		erase: function (end) {
 			// Cannot have two rendering process for
 			// the same draw. Keep it cool.
 			if (this.timeouts.length) {
@@ -91,8 +98,10 @@
 
 			do {
 				this.pointer--;
-				this.strokes[this.pointer].object.remove();
-				this.strokes[this.pointer].object = null;
+				this.kanjis[this.pointer].raphaelstroke.remove();
+				this.kanjis[this.pointer].raphaelstroke = null;
+				this.kanjis[this.pointer].raphaeltext.remove();
+				this.kanjis[this.pointer].raphaeltext = null;
 				this.options.erased(this.pointer);
 			}
 			while (this.pointer > end);
@@ -110,13 +119,16 @@
 			}
 
 			if (typeof end === "undefined") {
-				end = this.strokes.length;
-			} else if (end > this.strokes.length) {
+                end = this.kanjis.length;
+            } else if (end > this.kanjis.length) {
 				return false;
 			}
 
 			var cb = function (that) {
-					createStroke(that.papers[that.strokes[that.pointer].char], that.strokes[that.pointer]);
+					createStroke(that.papers[that.kanjis[that.pointer].char], that.kanjis[that.pointer]);
+					if (Dmak.options.text.visible) {
+						createText(that.papers[that.kanjis[that.pointer].char], that.kanjis[that.pointer]);
+					}
 					that.pointer++;
 					that.timeouts.shift();
 					that.options.drew(that.pointer);
@@ -132,13 +144,13 @@
 					t = setTimeout(cb, delay, this);
 					this.timeouts.push(t);
 				}
-				delay += this.strokes[i].duration;
+				delay += this.kanjis[i].duration;
 			}
 		},
 
 		/**
 		 * Pause rendering
-		*/
+		 */
 		pause: function () {
 			for (var i = 0; i < this.timeouts.length; i++) {
 				window.clearTimeout(this.timeouts[i]);
@@ -165,30 +177,32 @@
 	// HELPERS
 
 	/**
-	 * Flattens the array of strokes ; 3D > 2D
+	 * Flattens the array of kanjis ; 3D > 2D
 	 * and does some preprocessing while looping
-	 * through all the strokes:
+	 * through all the kanjis:
 	 *  - Maps to a character index
 	 *  - Calculates path length
 	 */
-	function preprocessStrokes (strokes) {
+	function preprocessKanjis(kanjis) {
 		var s = [],
 			length,
-			stroke,
+			kanji,
 			i,
 			j;
 
-		for (i = 0; i < strokes.length; i++) {
-			for (j = 0; j < strokes[i].length; j++) {
-				length = Raphael.getTotalLength(strokes[i][j]);
-				stroke = {
+		for (i = 0; i < kanjis.length; i++) {
+			for (j = 0; j < kanjis[i].paths.length; j++) {
+				length = Raphael.getTotalLength(kanjis[i].paths[j]);
+				kanji = {
 					"char": i,
 					"length": length,
 					"duration": length * Dmak.options.step * 1000,
-					"path": strokes[i][j],
-					"object": null
+					"path": kanjis[i].paths[j],
+					"text": kanjis[i].texts[j],
+					"raphaelstroke": null,
+					"raphaeltext": null
 				};
-				s.push(stroke);
+				s.push(kanji);
 			}
 		}
 
@@ -198,7 +212,7 @@
 	/**
 	 * Init Raphael paper objects
 	 */
-	function giveBirthToRaphael (nbChar) {
+	function giveBirthToRaphael(nbChar) {
 		var papers = [],
 			paper,
 			i;
@@ -214,7 +228,7 @@
 	/**
 	 * Draw the background grid
 	 */
-	function showGrid (papers) {
+	function showGrid(papers) {
 		var i;
 
 		for (i = 0; i < papers.length; i++) {
@@ -226,12 +240,20 @@
 	/**
 	 * Draw a single stroke ; drawing can be animated if set as so.
 	 */
-	function createStroke (paper, stroke) {
-		stroke.object = paper.path(stroke.path);
-		stroke.object.attr(Dmak.options.stroke.attr);
+	function createStroke(paper, stroke) {
+		stroke.raphaelstroke = paper.path(stroke.path);
+		stroke.raphaelstroke.attr(Dmak.options.stroke.attr);
 		if (Dmak.options.stroke.animated) {
 			animateStroke(stroke);
 		}
+	}
+
+	/**
+	 * Draw a single text
+	 */
+	function createText(paper, stroke) {
+		stroke.raphaeltext = paper.text(stroke.text.x, stroke.text.y, stroke.text.value);
+		stroke.raphaeltext.attr(Dmak.options.text.attr);
 	}
 
 	/**
@@ -239,33 +261,33 @@
 	 * Based on the great article wrote by Jake Archibald
 	 * http://jakearchibald.com/2013/animated-line-drawing-svg/
 	 */
-	function animateStroke (stroke) {
-		stroke.object.attr({"stroke": Dmak.options.stroke.attr.active});
-		stroke.object.node.style.transition = stroke.object.node.style.WebkitTransition = "none";
+	function animateStroke(stroke) {
+		stroke.raphaelstroke.attr({"stroke": Dmak.options.stroke.attr.active});
+		stroke.raphaelstroke.node.style.transition = stroke.raphaelstroke.node.style.WebkitTransition = "none";
 		// Set up the starting positions
-		stroke.object.node.style.strokeDasharray = stroke.length + " " + stroke.length;
-		stroke.object.node.style.strokeDashoffset = stroke.length;
+		stroke.raphaelstroke.node.style.strokeDasharray = stroke.length + " " + stroke.length;
+		stroke.raphaelstroke.node.style.strokeDashoffset = stroke.length;
 		// Trigger a layout so styles are calculated & the browser
 		// picks up the starting position before animating
-		stroke.object.node.getBoundingClientRect();
-		stroke.object.node.style.transition = stroke.object.node.style.WebkitTransition = "stroke-dashoffset " + stroke.duration + "ms ease";
+		stroke.raphaelstroke.node.getBoundingClientRect();
+		stroke.raphaelstroke.node.style.transition = stroke.raphaelstroke.node.style.WebkitTransition = "stroke-dashoffset " + stroke.duration + "ms ease";
 		// Go!
-		stroke.object.node.style.strokeDashoffset = "0";
+		stroke.raphaelstroke.node.style.strokeDashoffset = "0";
 		// Revert back to the options color when the animation is done.
 		setTimeout(function () {
 			// The stroke object may have been already erased when we reach this timeout
-			if (stroke.object === null) {
+			if (stroke.raphaelstroke === null) {
 				return;
 			}
-			stroke.object.node.style.stroke = Dmak.options.stroke.attr.stroke;
-			stroke.object.node.style.transition = stroke.object.node.style.WebkitTransition = "stroke 400ms ease";
+			stroke.raphaelstroke.node.style.stroke = Dmak.options.stroke.attr.stroke;
+			stroke.raphaelstroke.node.style.transition = stroke.raphaelstroke.node.style.WebkitTransition = "stroke 400ms ease";
 		}, stroke.duration);
 	}
 
 	/**
 	 * Simplistic helper function for extending objects
 	 */
-	function extend (defaults, replacement) {
+	function extend(defaults, replacement) {
 		var result = defaults,
 			key;
 
