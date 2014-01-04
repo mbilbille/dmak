@@ -1,31 +1,16 @@
 <!DOCTYPE html>
 <html>
-<head>
+	<head>
+	<meta charset="utf-8">
 	<title>Draw Me A Kanji</title>
-	<link rel="stylesheet" href="../src/dmak.css" />
-	<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
-	<script src="http://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.2/raphael-min.js"></script>
+	<link rel="stylesheet" href="demo.css"/>
+	<link rel="stylesheet" href="../src/dmak.css"/>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.2/raphael-min.js"></script>
 	<script src="../dist/dmak.js"></script>
 	<script src="../dist/jquery.dmak.js"></script>
-	<style type="text/css">
-		body {
-			text-align: center;
-		}
-		#sample-btn button {
-			background-color: #EDEDED;
-			border: 1px solid #BBB;
-			font-size: 30px;
-			height: 50px;
-			width: 50px;
-			cursor: pointer;
-		}
-		#sample-btn button:hover {
-			color: #F92672;
-			border-bottom-width: 2px;
-		}
-	</style>
-</head>
-<body>
+	</head>
+	<body>
 	<div id="draw"></div>
 	<div id="sample-btn">
 		<button id="p">‹</button>
@@ -35,28 +20,34 @@
 		<button id="r">✕</button>
 	</div>
 	<script>
-		$(function() {
-			$("#draw").dmak('電車');
-			$("#sample-btn button").on("click", function(e) {
+		$(function () {
+			var dmak = $("#draw");
+			dmak.dmak('電車');
+			$("#sample-btn").find("button").on("click", function (e) {
 				e.preventDefault();
-				switch($(this).attr("id")) {
-					case 'p': $('#draw').dmak('rewind', 1);
-					break;
-					case 's': $('#draw').dmak('pause');
-					$(this).toggle();
-					$("#g").toggle();
-					break;
-					case 'g': $('#draw').dmak('play');
-					$(this).toggle();
-					$("#s").toggle();
-					break;
-					case 'n': $('#draw').dmak('forward', 1);
-					break;
-					case 'r': $('#draw').dmak('reset');
-					break;
+				switch ($(this).attr("id")) {
+					case 'p':
+						dmak.dmak('rewind', 1);
+						break;
+					case 's':
+						dmak.dmak('pause');
+						$(this).toggle();
+						$("#g").toggle();
+						break;
+					case 'g':
+						dmak.dmak('play');
+						$(this).toggle();
+						$("#s").toggle();
+						break;
+					case 'n':
+						dmak.dmak('forward', 1);
+						break;
+					case 'r':
+						dmak.dmak('reset');
+						break;
 				}
 			})
 		});
 	</script>
-</body>
+	</body>
 </html>

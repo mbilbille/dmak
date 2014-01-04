@@ -1,31 +1,14 @@
 <!DOCTYPE html>
 <html>
-<head>
+	<head>
+	<meta charset="utf-8">
 	<title>Draw Me A Kanji</title>
-	<link rel="stylesheet" href="../src/dmak.css" />
-	<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
-	<script src="http://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.2/raphael-min.js"></script>
+	<link rel="stylesheet" href="../src/dmak.css"/>
+	<link rel="stylesheet" href="demo.css"/>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.2/raphael-min.js"></script>
 	<script src="../dist/dmak.js"></script>
-	<script src="../dist/jquery.dmak.js"></script>
-	<style type="text/css">
-		body {
-			text-align: center;
-		}
-		#sample-btn button {
-			background-color: #EDEDED;
-			border: 1px solid #BBB;
-			font-size: 30px;
-			height: 50px;
-			width: 50px;
-			cursor: pointer;
-		}
-		#sample-btn button:hover {
-			color: #F92672;
-			border-bottom-width: 2px;
-		}
-	</style>
-</head>
-<body>
+	</head>
+	<body>
 	<div id="draw"></div>
 	<div id="sample-btn">
 		<button id="p">‹</button>
@@ -35,27 +18,27 @@
 		<button id="r">✕</button>
 	</div>
 	<script>
-		var dmak = new Dmak('電車', {'element' : "draw"});
+		var dmak = new Dmak('電車', {'element': "draw"});
 		var p = document.getElementById("p");
-		p.onclick = function() {
+		p.onclick = function () {
 			dmak.eraseLastStrokes(1);
 		};
 		var s = document.getElementById("s");
-		s.onclick = function() {
+		s.onclick = function () {
 			dmak.pause();
 		};
 		var g = document.getElementById("g");
-		g.onclick = function() {
+		g.onclick = function () {
 			dmak.render();
 		};
 		var n = document.getElementById("n");
-		n.onclick = function() {
+		n.onclick = function () {
 			dmak.renderNextStrokes(1);
 		};
 		var r = document.getElementById("r");
-		r.onclick = function() {
+		r.onclick = function () {
 			dmak.erase();
 		};
 	</script>
-</body>
+	</body>
 </html>
