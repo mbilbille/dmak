@@ -46,7 +46,7 @@
 		step: 0.03,
 		element: "draw",
 		stroke: {
-			animated: true,
+			animated: false,
 			order: {
 				visible: false,
 				attr: {
@@ -165,7 +165,7 @@
 				t;
 
 			for (i = this.pointer; i < end; i++) {
-				if (delay <= 0) {
+				if (!Dmak.options.stroke.animated || delay <= 0) {
 					cb(this);
 				} else {
 					t = setTimeout(cb, delay, this);
