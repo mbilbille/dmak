@@ -1,5 +1,5 @@
 /*
- *  Draw Me A Kanji - v0.1.1
+ *  Draw Me A Kanji - v0.2.0
  *  A funny drawer for your Japanese writings
  *  http://drawmeakanji.com
  *
@@ -35,7 +35,7 @@
 	};
 
 	// Current version.
-	Dmak.VERSION = "0.1.1";
+	Dmak.VERSION = "0.2.0";
 
 	Dmak.options = {
 		uri: "",

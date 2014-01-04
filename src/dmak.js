@@ -27,7 +27,7 @@
 	};
 
 	// Current version.
-	Dmak.VERSION = "0.1.1";
+	Dmak.VERSION = "0.2.0";
 
 	Dmak.options = {
 		uri: "",
