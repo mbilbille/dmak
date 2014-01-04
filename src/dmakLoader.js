@@ -7,9 +7,11 @@
 		this.uri = uri;
 	};
 
-	// Gather SVG data information for a given set of characters.
-	// By default this action is done while instanciating the Word
-	// object, but it can be skipped, see above
+	/**
+	 * Gather SVG data information for a given set of characters.
+	 * By default this action is done while instanciating the Word
+	 * object, but it can be skipped, see above
+	 */
 	DmakLoader.prototype.load = function (text, callback) {
 		var paths = [],
 			nbChar = text.length,
@@ -33,9 +35,11 @@
 		}
 	};
 
-	// Try to load a SVG file matching the given char code.
-	// @thanks to the incredible work made by KanjiVG
-	// @see: http://kanjivg.tagaini.net
+	/**
+	 * Try to load a SVG file matching the given char code.
+	 * @thanks to the incredible work made by KanjiVG
+	 * @see: http://kanjivg.tagaini.net
+	 */
 	function loadSvg(uri, index, charCode, callbacks) {
 		var xhr = new XMLHttpRequest(),
 			code = ("00000" + charCode).slice(-5);
@@ -52,30 +56,31 @@
 		xhr.send();
 	}
 
+	/**
+	 * Simple parser to extract paths and texts data.
+	 */
 	function parseResponse(response) {
-		var results = {paths: [], texts: []},
-			parser = new DOMParser(),
-			parsed = parser.parseFromString(response, "application/xml"),
-			paths = parsed.querySelectorAll("path"),
-			texts = parsed.querySelectorAll("text"),
-			textValue,
-			transform,
-			x,
-			y,
-			text,
+		var data = {
+				paths: [],
+				texts: []
+			},
+			dom = new DOMParser().parseFromString(response, "application/xml"),
+			paths = dom.querySelectorAll("path"),
+			texts = dom.querySelectorAll("text"),
 			i;
+			
 		for (i = 0; i < paths.length; i++) {
-			results.paths.push(paths[i].getAttribute("d"));
+			data.paths.push(paths[i].getAttribute("d"));
 		}
+		
 		for (i = 0; i < texts.length; i++) {
-			textValue = texts[i].textContent;
-			transform = texts[i].getAttribute("transform");
-			x = transform.split(" ")[4];
-			y = transform.split(" ")[5].replace(")", "");
-			text = {"value": textValue, "x": x, "y": y};
-			results.texts.push(text);
+			data.texts.push({
+				"value" : texts[i].textContent,
+				"x" : texts[i].getAttribute("transform").split(" ")[4],
+				"y" : texts[i].getAttribute("transform").split(" ")[5].replace(")", "")
+			});
 		}
-		return results;
+		return data;
 	}
 
 	window.DmakLoader = DmakLoader;

@@ -49,9 +49,12 @@ Dmak.js comes with a whole set of options to alter the way it behaves. Here is a
 * `step` - positive integer which defines the speed of the drawing. `0.03`
 * `element` - DOM element or its ID which is going to be a parent for drawing surface. `"draw"`
 * `stroke.animated` - enable or disable stroke animation. `true`
-* `stroke.attr.active` - currently drawn stroke color. `"#F92672"`
-* `stroke.attr.stroke` - stroke color. `"#272822"`
-* `stroke.attr.stroke-width` - stroke width in pixels. `3`
+* `stroke.order.visible` - display stroke order. `false`
+* `stroke.order.visible.attr.font-size` - stroke order font size in pixels. `8`
+* `stroke.order.visible.attr.fill` - stroke order color. `#999999`
+* `stroke.attr.active` - currently drawn stroke color. `"#BF0000"`
+* `stroke.attr.stroke` - stroke color (can use "random" keyword here for random color). `"#2C2C2C"`
+* `stroke.attr.stroke-width` - stroke width in pixels. `4`
 * `stroke.attr.stroke-linecap` - ["butt", "square", "round"]. `"round`
 * `stroke.attr.stroke-linejoin` - ["bevel", "round", "miter"]. `"round`
 * `grid.show` - show or hide gridlines. `true`
