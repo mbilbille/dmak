@@ -1,4 +1,4 @@
-/** 
+/**
  * Draw Me a Kanji - version: 0.1
  * Plugin jQuery
  *
@@ -16,7 +16,7 @@
 	function Plugin ( element, text, options ) {
 		this.element = element;
 		this.text = text;
-		this.options = $.extend( {}, options, {'element' : $(element).attr('id')} );
+		this.options = $.extend( {}, options, {"element" : $(element).attr("id")} );
 		this._name = pluginName;
 		this.dmak = null;
 		this.init();
@@ -57,7 +57,7 @@
 				$.data( this, "plugin_" + pluginName, new Plugin( this, text, options ) );
 			}
 			else if ($.isFunction(Plugin.prototype[text])) {
-				$.data(this, 'plugin_' + pluginName)[text](options);
+				$.data(this, "plugin_" + pluginName)[text](options);
 			}
 		});
 	};

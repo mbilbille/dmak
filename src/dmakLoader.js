@@ -11,11 +11,11 @@
 	// By default this action is done while instanciating the Word
 	// object, but it can be skipped, see above
 	DmakLoader.prototype.load = function (text, callback) {
-		var paths = [];
-		var nbChar = text.length;
-		var done = 0;
-		for (var i = 0; i < nbChar; i++) {
-			loadSvg(this.uri, i, text.charCodeAt(i).toString(16), {
+		var paths = [],
+			nbChar = text.length,
+			done = 0,
+			i,
+			callbacks = {
 				done: function (index, data) {
 					paths[index] = data;
 					done++;
@@ -24,9 +24,12 @@
 					}
 				},
 				error: function (msg) {
-					console.log('Error', msg);
+					console.log("Error", msg);
 				}
-			});
+			};
+
+		for (i = 0; i < nbChar; i++) {
+			loadSvg(this.uri, i, text.charCodeAt(i).toString(16), callbacks);
 		}
 	};
 
@@ -50,11 +53,13 @@
 
 	// Parse the SVG data to only keep paths data.
 	function parseResponse(response) {
-		var parser = new DOMParser();
-		var elements = parser.parseFromString(response, "application/xml").querySelectorAll('path');
-		var paths = [];
-		for (var i = 0; i < elements.length; i++) {
-			paths.push(elements[i].getAttribute('d'));
+		var parser = new DOMParser(),
+			elements = parser.parseFromString(response, "application/xml").querySelectorAll("path"),
+			paths = [],
+			i;
+
+		for (i = 0; i < elements.length; i++) {
+			paths.push(elements[i].getAttribute("d"));
 		}
 		return paths;
 	}

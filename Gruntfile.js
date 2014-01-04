@@ -30,6 +30,14 @@ module.exports = function(grunt) {
 			}
 		},
 
+		// Lint definitions
+		jshint: {
+			files: ["src/dmakLoader.js", "src/dmak.js", "src/jquery.dmak.js"],
+			options: {
+				jshintrc: ".jshintrc"
+			}
+		},
+
 		// Minify definitions
 		uglify: {
 			my_target: {
@@ -46,7 +54,9 @@ module.exports = function(grunt) {
 	});
 
 	grunt.loadNpmTasks("grunt-contrib-concat");
+	grunt.loadNpmTasks("grunt-contrib-jshint");
 	grunt.loadNpmTasks("grunt-contrib-uglify");
 
-	grunt.registerTask("default", ["concat", "uglify"]);
+	grunt.registerTask("default", ["jshint", "concat", "uglify"]);
+	grunt.registerTask("travis", ["jshint"]);
 };

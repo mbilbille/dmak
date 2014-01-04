@@ -1,5 +1,5 @@
 /*
- *  Draw me a kanji - v0.1.0
+ *  Draw Me A Kanji - v0.1.1
  *  A funny drawer for your Japanese writings
  *  https://github.com/mbilbille/dmak
  *
@@ -8,343 +8,357 @@
  */
  ;(function () {
 
-    "use strict"
+	"use strict";
 
-    // Create a safe reference to the DrawMeAKanji object for use below.
-    var Dmak = function(text, options) {
-        this.text = text;
-        this.options  = extend(Dmak.options, options);
-        this.strokes = [];
-        this.papers = [];
-        this.pointer  = 0;
-        this.timeouts = [];
+	// Create a safe reference to the DrawMeAKanji object for use below.
+	var Dmak = function (text, options) {
+		this.text = text;
+		this.options = extend(Dmak.options, options);
+		this.strokes = [];
+		this.papers = [];
+		this.pointer = 0;
+		this.timeouts = [];
 
-        if(!this.options.skipLoad) {
-            var loader = new DmakLoader(this.options.uri);
-            loader.load(text, function(strokes) {
-                this.setStrokes(strokes);
-                this.options.loaded(this.strokes);
-                if(this.options.autoplay) {
-                    this.render();
-                }
-            }.bind(this));
-        }
-    };
+		if (!this.options.skipLoad) {
+			var loader = new DmakLoader(this.options.uri);
+			loader.load(text, function (strokes) {
+				this.setStrokes(strokes);
+				this.options.loaded(this.strokes);
+				if (this.options.autoplay) {
+					this.render();
+				}
+			}.bind(this));
+		}
+	};
 
-    // Current version.
-    Dmak.VERSION = '0.1';
+	// Current version.
+	Dmak.VERSION = "0.1.1";
 
-    Dmak.options = {
-        uri : '',
-        skipLoad : false,
-        autoplay : true,
-        height : 109,
-        width : 109,
-        step : 0.03,
-        element : 'draw',
-        stroke : {
-            animated : true,
-            attr : {
-                'active': '#F92672',
-                'stroke' : "#272822",
-                'stroke-width' : 3,
-                'stroke-linecap' : 'round',
-                'stroke-linejoin' : 'round'
-            }
-        },
-        grid : {
-            show: true,
-            attr : {
-                'stroke': '#CCCCCC',
-                'stroke-width' : 0.5,
-                'stroke-dasharray' : "--"
-            }
-        },
-        loaded : function(){},
-        erased : function(){},
-        drew:  function(){}
-    };
+	Dmak.options = {
+		uri: "",
+		skipLoad: false,
+		autoplay: true,
+		height: 109,
+		width: 109,
+		step: 0.03,
+		element: "draw",
+		stroke: {
+			animated: true,
+			attr: {
+				"active": "#F92672",
+				"stroke": "#272822",
+				"stroke-width": 3,
+				"stroke-linecap": "round",
+				"stroke-linejoin": "round"
+			}
+		},
+		grid: {
+			show: true,
+			attr: {
+				"stroke": "#CCCCCC",
+				"stroke-width": 0.5,
+				"stroke-dasharray": "--"
+			}
+		},
+		loaded: function () {
+		},
+		erased: function () {
+		},
+		drew: function () {
+		}
+	};
 
-    Dmak.fn = Dmak.prototype = {
-        
-        setStrokes: function(strokes) {
-            this.strokes = preprocessStrokes(strokes);
-            this.papers   = giveBirthToRaphael(strokes.length);
-            if(this.options.grid.show) {
-                showGrid(this.papers);
-            }
-        },
+	Dmak.fn = Dmak.prototype = {
 
-        /**
-         * Clean all strokes on papers.
-         */
-        erase: function(end) {
-            // Cannot have two rendering process for
-            // the same draw. Keep it cool.
-            if(this.timeouts.length) {
-                return false;
-            }
+		setStrokes: function (strokes) {
+			this.strokes = preprocessStrokes(strokes);
+			this.papers = giveBirthToRaphael(strokes.length);
+			if (this.options.grid.show) {
+				showGrid(this.papers);
+			}
+		},
 
-            // Don't go behind the beginning.
-            if(this.pointer <= 0) {
-                return false;
-            }
+		/**
+		 * Clean all strokes on papers.
+		 */
+		 erase: function (end) {
+			// Cannot have two rendering process for
+			// the same draw. Keep it cool.
+			if (this.timeouts.length) {
+				return false;
+			}
 
-            if(typeof end === "undefined") {
-                end = 0;
-            }
+			// Don't go behind the beginning.
+			if (this.pointer <= 0) {
+				return false;
+			}
 
-            do {
-                this.pointer--;
-                this.strokes[this.pointer].object.remove();
-                this.strokes[this.pointer].object = null;
-                this.options.erased(this.pointer);
-            }
-            while(this.pointer > end)
-        },
+			if (typeof end === "undefined") {
+				end = 0;
+			}
 
-        /**
-         * All the magic happens here.
-         */
-        render: function(end) {
+			do {
+				this.pointer--;
+				this.strokes[this.pointer].object.remove();
+				this.strokes[this.pointer].object = null;
+				this.options.erased(this.pointer);
+			}
+			while (this.pointer > end);
+		},
 
-            // Cannot have two rendering process for
-            // the same draw. Keep it cool.
-            if(this.timeouts.length) {
-                return false;
-            }
-        
-            if(typeof end === "undefined") {
-                end = this.strokes.length;
-            }
-            else if(end > this.strokes.length) {
-                return false;
-            }
+		/**
+		 * All the magic happens here.
+		 */
+		render: function (end) {
 
-            var delay = 0;
-            var func = function(that) {
-                createStroke(that.papers[that.strokes[that.pointer].char], that.strokes[that.pointer]);
-                that.pointer++;
-                that.timeouts.shift();
-                that.options.drew(that.pointer);
-            };
+			// Cannot have two rendering process for
+			// the same draw. Keep it cool.
+			if (this.timeouts.length) {
+				return false;
+			}
 
-            for (var i = this.pointer; i < end; i++) {
-                if(delay <= 0) {
-                    func(this);
-                }
-                else {
-                    var t = setTimeout(func, delay, this);
-                    this.timeouts.push(t);
-                }
-                delay += this.strokes[i].duration;
-            }
-        },
+			if (typeof end === "undefined") {
+				end = this.strokes.length;
+			} else if (end > this.strokes.length) {
+				return false;
+			}
 
-        /**
-         * Pause rendering
-         */
-        pause: function(end) {
-            for (var i = 0; i < this.timeouts.length; i++) {
-                window.clearTimeout(this.timeouts[i]);
-            }
-            this.timeouts = [];
-        },
+			var cb = function (that) {
+					createStroke(that.papers[that.strokes[that.pointer].char], that.strokes[that.pointer]);
+					that.pointer++;
+					that.timeouts.shift();
+					that.options.drew(that.pointer);
+				},
+				delay = 0,
+				i,
+				t;
 
-        /**
-         * Wrap the erase function to remove the x last strokes.
-         */
-        eraseLastStrokes: function(nbStrokes){
-            this.erase(this.pointer - nbStrokes);
-        },
+			for (i = this.pointer; i < end; i++) {
+				if (delay <= 0) {
+					cb(this);
+				} else {
+					t = setTimeout(cb, delay, this);
+					this.timeouts.push(t);
+				}
+				delay += this.strokes[i].duration;
+			}
+		},
 
-        /**
-         * Wrap the render function to render the x next strokes.
-         */
-        renderNextStrokes: function(nbStrokes){
-            this.render(this.pointer + nbStrokes);
-        }
+		/**
+		 * Pause rendering
+		*/
+		pause: function () {
+			for (var i = 0; i < this.timeouts.length; i++) {
+				window.clearTimeout(this.timeouts[i]);
+			}
+			this.timeouts = [];
+		},
 
-    };
+		/**
+		 * Wrap the erase function to remove the x last strokes.
+		 */
+		eraseLastStrokes: function (nbStrokes) {
+			this.erase(this.pointer - nbStrokes);
+		},
 
-    // HELPERS
+		/**
+		 * Wrap the render function to render the x next strokes.
+		 */
+		renderNextStrokes: function (nbStrokes) {
+			this.render(this.pointer + nbStrokes);
+		}
 
-    /**
-     * Flattens the array of strokes ; 3D > 2D
-     * and does some preprocessing while looping
-     * through all the strokes:
-     *  - Maps to a character index
-     *  - Calculates path length
-     */
-    var preprocessStrokes = function(strokes) {
-        var s = [];
-        for(var i = 0; i < strokes.length; i++) {
-            for (var j = 0; j < strokes[i].length; j++) {
-                var length = Raphael.getTotalLength(strokes[i][j]);
-                var stroke = {
-                    'char' : i,
-                    'length' : length,
-                    'duration' : length * Dmak.options.step * 1000,
-                    'path' : strokes[i][j],
-                    'object' : null
-                }
-                s.push(stroke);
-            }
-        }
+	};
 
-        return s;
-    }
+	// HELPERS
 
-    /**
-     * Init Raphael paper objects
-     */
-    var giveBirthToRaphael = function(nbChar) {
-        var papers = []
-        for(var i = 0; i < nbChar; i++) {
-            var paper = new Raphael(Dmak.options.element, Dmak.options.width + "px", Dmak.options.height +"px");
-            paper.canvas.setAttribute("class","dmak-svg");
-            papers.push(paper);
-        }
+	/**
+	 * Flattens the array of strokes ; 3D > 2D
+	 * and does some preprocessing while looping
+	 * through all the strokes:
+	 *  - Maps to a character index
+	 *  - Calculates path length
+	 */
+	function preprocessStrokes (strokes) {
+		var s = [],
+			length,
+			stroke,
+			i,
+			j;
 
-        return papers.reverse();
-    }
+		for (i = 0; i < strokes.length; i++) {
+			for (j = 0; j < strokes[i].length; j++) {
+				length = Raphael.getTotalLength(strokes[i][j]);
+				stroke = {
+					"char": i,
+					"length": length,
+					"duration": length * Dmak.options.step * 1000,
+					"path": strokes[i][j],
+					"object": null
+				};
+				s.push(stroke);
+			}
+		}
 
-    /**
-     * Draw the background grid
-     */
-    var showGrid = function(papers) {
-        for(var i = 0; i < papers.length; i++) {
-            papers[i].path("M" + (Dmak.options.width / 2) + ",0 L" + (Dmak.options.width / 2) + "," + Dmak.options.height).attr(Dmak.options.grid.attr);
-            papers[i].path("M0," + (Dmak.options.height / 2) + " L" + Dmak.options.width + "," + (Dmak.options.height / 2)).attr(Dmak.options.grid.attr);
-        }
-    }
+		return s;
+	}
 
-    /**
-     * Draw a single stroke ; drawing can be animated if set as so.
-     */
-    var createStroke = function(paper, stroke) {
-        stroke.object = paper.path(stroke.path);
-        stroke.object.attr(Dmak.options.stroke.attr);
-        if(Dmak.options.stroke.animated) {
-            animateStroke(stroke);
-        }
-    }
+	/**
+	 * Init Raphael paper objects
+	 */
+	function giveBirthToRaphael (nbChar) {
+		var papers = [],
+			paper,
+			i;
 
-    /**
-     * Animate stroke drawing.
-     * Based on the great article wrote by Jake Archibald
-     * http://jakearchibald.com/2013/animated-line-drawing-svg/
-     */
-    var animateStroke = function(stroke) {
-        stroke.object.attr({'stroke' : Dmak.options.stroke.attr.active});
-        stroke.object.node.style.transition = stroke.object.node.style.WebkitTransition = 'none';
-        // Set up the starting positions
-        stroke.object.node.style.strokeDasharray = stroke.length + ' ' + stroke.length;
-        stroke.object.node.style.strokeDashoffset = stroke.length;
-        // Trigger a layout so styles are calculated & the browser
-        // picks up the starting position before animating
-        stroke.object.node.getBoundingClientRect();
-        stroke.object.node.style.transition = stroke.object.node.style.WebkitTransition = 'stroke-dashoffset ' + stroke.duration + 'ms ease';
-        // Go!
-        stroke.object.node.style.strokeDashoffset = '0';
-        // Revert back to the options color when the animation is done.
-        setTimeout(function(){
-            // The stroke object may have been already erased when we reach this
-            // timeout
-            if(stroke.object == null) {
-                return;
-            }
-            stroke.object.node.style.stroke = Dmak.options.stroke.attr.stroke;
-            stroke.object.node.style.transition = stroke.object.node.style.WebkitTransition = 'stroke 400ms ease';
-        }, stroke.duration);
-    };
+		for (i = 0; i < nbChar; i++) {
+			paper = new Raphael(Dmak.options.element, Dmak.options.width + "px", Dmak.options.height + "px");
+			paper.canvas.setAttribute("class", "dmak-svg");
+			papers.push(paper);
+		}
+		return papers.reverse();
+	}
 
-    /**
-     * Simplistic helper function for extending objects
-     */
-    var extend = function (defaults, replacement) {
-        if(arguments.length != 2) {
-            throw new Error('Missing arguments in extend function');
-        }
+	/**
+	 * Draw the background grid
+	 */
+	function showGrid (papers) {
+		var i;
 
-        var result = defaults;
-        for(var key in replacement) {
-            if(typeof result[key] === 'object') {
-                result[key] = extend(result[key], replacement[key]);
-            } else if(result.hasOwnProperty(key)) {
-                result[key] = replacement[key];
-            }
-        }
-        
-        
-        return result;
-    };
+		for (i = 0; i < papers.length; i++) {
+			papers[i].path("M" + (Dmak.options.width / 2) + ",0 L" + (Dmak.options.width / 2) + "," + Dmak.options.height).attr(Dmak.options.grid.attr);
+			papers[i].path("M0," + (Dmak.options.height / 2) + " L" + Dmak.options.width + "," + (Dmak.options.height / 2)).attr(Dmak.options.grid.attr);
+		}
+	}
 
-    window.Dmak = Dmak;
+	/**
+	 * Draw a single stroke ; drawing can be animated if set as so.
+	 */
+	function createStroke (paper, stroke) {
+		stroke.object = paper.path(stroke.path);
+		stroke.object.attr(Dmak.options.stroke.attr);
+		if (Dmak.options.stroke.animated) {
+			animateStroke(stroke);
+		}
+	}
+
+	/**
+	 * Animate stroke drawing.
+	 * Based on the great article wrote by Jake Archibald
+	 * http://jakearchibald.com/2013/animated-line-drawing-svg/
+	 */
+	function animateStroke (stroke) {
+		stroke.object.attr({"stroke": Dmak.options.stroke.attr.active});
+		stroke.object.node.style.transition = stroke.object.node.style.WebkitTransition = "none";
+		// Set up the starting positions
+		stroke.object.node.style.strokeDasharray = stroke.length + " " + stroke.length;
+		stroke.object.node.style.strokeDashoffset = stroke.length;
+		// Trigger a layout so styles are calculated & the browser
+		// picks up the starting position before animating
+		stroke.object.node.getBoundingClientRect();
+		stroke.object.node.style.transition = stroke.object.node.style.WebkitTransition = "stroke-dashoffset " + stroke.duration + "ms ease";
+		// Go!
+		stroke.object.node.style.strokeDashoffset = "0";
+		// Revert back to the options color when the animation is done.
+		setTimeout(function () {
+			// The stroke object may have been already erased when we reach this timeout
+			if (stroke.object === null) {
+				return;
+			}
+			stroke.object.node.style.stroke = Dmak.options.stroke.attr.stroke;
+			stroke.object.node.style.transition = stroke.object.node.style.WebkitTransition = "stroke 400ms ease";
+		}, stroke.duration);
+	}
+
+	/**
+	 * Simplistic helper function for extending objects
+	 */
+	function extend (defaults, replacement) {
+		var result = defaults,
+			key;
+
+		if (arguments.length !== 2) {
+			throw new Error("Missing arguments in extend function");
+		}
+
+		for (key in replacement) {
+			if (typeof result[key] === "object") {
+				result[key] = extend(result[key], replacement[key]);
+			} else if (result.hasOwnProperty(key)) {
+				result[key] = replacement[key];
+			}
+		}
+		return result;
+	}
+
+	window.Dmak = Dmak;
 }());
 
- ;(function () {
+;(function () {
 
-    "use strict"
+	"use strict";
 
-    // Create a safe reference to the DrawMeAKanji object for use below.
-    var DmakLoader = function(uri) {
-        this.uri     = uri;
-    };
+	// Create a safe reference to the DrawMeAKanji object for use below.
+	var DmakLoader = function (uri) {
+		this.uri = uri;
+	};
 
-    // Gather SVG data information for a given set of characters.
-    // By default this action is done while instanciating the Word
-    // object, but it can be skipped, see above 
-    DmakLoader.prototype.load = function (text, callback) {
-        var done = 0;
-        var paths = [];
-        var nbChar = text.length;
-        var done = 0;
-        for(var i = 0; i < nbChar; i++ ) {
-            loadSvg(this.uri, i, text.charCodeAt(i).toString(16), {
+	// Gather SVG data information for a given set of characters.
+	// By default this action is done while instanciating the Word
+	// object, but it can be skipped, see above
+	DmakLoader.prototype.load = function (text, callback) {
+		var paths = [],
+			nbChar = text.length,
+			done = 0,
+			i,
+			callbacks = {
+				done: function (index, data) {
+					paths[index] = data;
+					done++;
+					if (done === nbChar) {
+						callback(paths);
+					}
+				},
+				error: function (msg) {
+					console.log("Error", msg);
+				}
+			};
 
-                done: function(index, data) {
-                    paths[index] = data;
-                    done++;
-                    if(done === nbChar){
-                        callback(paths);
-                    }
-                },
-                error: function(msg) {
-                    console.log('Error', msg);
-                }
-            });
-        }
-    };
+		for (i = 0; i < nbChar; i++) {
+			loadSvg(this.uri, i, text.charCodeAt(i).toString(16), callbacks);
+		}
+	};
 
-    // Try to load a SVG file matching the given char code.
-    // @thanks to the incredible work made by KanjiVG 
-    // @see: http://kanjivg.tagaini.net
-    function loadSvg(uri, index, charCode, callbacks) {
-        var xhr = new XMLHttpRequest();
-        xhr.open("GET", uri + "0" + charCode + ".svg", true);  
-        xhr.onreadystatechange = function () {  
-            if (xhr.readyState === 4) {  
-                if (xhr.status === 200) {  
-                    callbacks.done(index, parseResponse(xhr.response));
-                } else {
-                    callbacks.error(xhr.statusText);
-                }  
-            }  
-        };  
-        xhr.send();
-    };
+	// Try to load a SVG file matching the given char code.
+	// @thanks to the incredible work made by KanjiVG
+	// @see: http://kanjivg.tagaini.net
+	function loadSvg(uri, index, charCode, callbacks) {
+		var xhr = new XMLHttpRequest();
+		xhr.open("GET", uri + "0" + charCode + ".svg", true);
+		xhr.onreadystatechange = function () {
+			if (xhr.readyState === 4) {
+				if (xhr.status === 200) {
+					callbacks.done(index, parseResponse(xhr.response));
+				} else {
+					callbacks.error(xhr.statusText);
+				}
+			}
+		};
+		xhr.send();
+	}
 
-    // Parse the SVG data to only keep paths data.
-    function parseResponse(response) {
-        var parser = new DOMParser();
-        var elements = parser.parseFromString(response, "application/xml").querySelectorAll('path');
-        var paths = [];
-        for (var i = 0; i < elements.length; i++) {
-            paths.push(elements[i].getAttribute('d'));
-        };
-        return paths;
-    }
+	// Parse the SVG data to only keep paths data.
+	function parseResponse(response) {
+		var parser = new DOMParser(),
+			elements = parser.parseFromString(response, "application/xml").querySelectorAll("path"),
+			paths = [],
+			i;
 
-    window.DmakLoader = DmakLoader;
+		for (i = 0; i < elements.length; i++) {
+			paths.push(elements[i].getAttribute("d"));
+		}
+		return paths;
+	}
+
+	window.DmakLoader = DmakLoader;
 }());
