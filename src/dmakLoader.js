@@ -37,8 +37,9 @@
 	// @thanks to the incredible work made by KanjiVG
 	// @see: http://kanjivg.tagaini.net
 	function loadSvg(uri, index, charCode, callbacks) {
-		var xhr = new XMLHttpRequest();
-		xhr.open("GET", uri + "0" + charCode + ".svg", true);
+		var xhr = new XMLHttpRequest(),
+			code = ("00000" + charCode).slice(-5);
+		xhr.open("GET", uri + code + ".svg", true);
 		xhr.onreadystatechange = function () {
 			if (xhr.readyState === 4) {
 				if (xhr.status === 200) {
@@ -51,17 +52,30 @@
 		xhr.send();
 	}
 
-	// Parse the SVG data to only keep paths data.
 	function parseResponse(response) {
-		var parser = new DOMParser(),
-			elements = parser.parseFromString(response, "application/xml").querySelectorAll("path"),
-			paths = [],
+		var results = {paths: [], texts: []},
+			parser = new DOMParser(),
+			parsed = parser.parseFromString(response, "application/xml"),
+			paths = parsed.querySelectorAll("path"),
+			texts = parsed.querySelectorAll("text"),
+			textValue,
+			transform,
+			x,
+			y,
+			text,
 			i;
-
-		for (i = 0; i < elements.length; i++) {
-			paths.push(elements[i].getAttribute("d"));
+		for (i = 0; i < paths.length; i++) {
+			results.paths.push(paths[i].getAttribute("d"));
 		}
-		return paths;
+		for (i = 0; i < texts.length; i++) {
+			textValue = texts[i].textContent;
+			transform = texts[i].getAttribute("transform");
+			x = transform.split(" ")[4];
+			y = transform.split(" ")[5].replace(")", "");
+			text = {"value": textValue, "x": x, "y": y};
+			results.texts.push(text);
+		}
+		return results;
 	}
 
 	window.DmakLoader = DmakLoader;
