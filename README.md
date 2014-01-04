@@ -85,7 +85,7 @@ Check [CONTRIBUTING.md](https://github.com/mbilbille/dmak/tree/master/CONTRIBUTI
 
 ## History
 
-Check [Release](https://github.com/mbilbille/dmak/tree/master/releases) list.
+Check [Release](https://github.com/mbilbille/dmak/releases) list.
 
 ## Building
 
