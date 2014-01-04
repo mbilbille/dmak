@@ -20,6 +20,12 @@ var options = {
     step : 0.03,
     uri: 'kanji/',
     stroke: {
+        order: {
+            'visible' : false,
+            attr : {
+                'fill' : '#CDC3C7'
+            }
+        },
         attr : {
             'active': '#E74C3C',
             'stroke': '#7F8C8D',
@@ -138,9 +144,14 @@ $(function() {
         }
     }).addSliderSegments($sliderWidth.slider("option").max);
 
-    $("#dmak-color").val("#7F8C8D");
+    $("#dmak-color").val(options.stroke.attr.stroke);
     $( document ).on( "change", "#dmak-color", function(e){
         options.stroke.attr.stroke = $(this).val();
+    });
+
+    $("#dmak-color-active").val(options.stroke.attr.active);
+    $( document ).on( "change", "#dmak-color-active", function(e){
+        options.stroke.attr.active = $(this).val();
     });
 
     var speeds = [0.1, 0.05, 0.02, 0.009, 0.005]
@@ -155,6 +166,18 @@ $(function() {
             options.step = speeds[ui.value - 1];
         }
     }).addSliderSegments($sliderSpeed.slider("option").max);
+
+    $("#dmak-order").html(options.stroke.order.visible ? 'ON' : 'OFF');
+    $( document ).on( "click", "#dmak-order", function(e){
+        e.preventDefault();
+        if($(this).html() == "ON") {
+            options.stroke.order.visible = false;
+            $(this).html("OFF");
+        } else {
+            options.stroke.order.visible = true;
+            $(this).html("ON");
+        }
+    });
 
     $("#dmak-grid").html(options.grid.show ? 'ON' : 'OFF');
     $( document ).on( "click", "#dmak-grid", function(e){
