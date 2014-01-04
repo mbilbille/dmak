@@ -1,7 +1,7 @@
 /*
  *  Draw Me A Kanji - v0.1.1
  *  A funny drawer for your Japanese writings
- *  https://github.com/mbilbille/dmak
+ *  http://drawmeakanji.com
  *
  *  Made by Matthieu Bilbille
  *  Under MIT License
