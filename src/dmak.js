@@ -15,10 +15,10 @@
 			var loader = new DmakLoader(this.options.uri);
 			loader.load(text, function (data) {
 				this.prepare(data);
-				
+
 				// Execute custom callback "loaded" here
 				this.options.loaded(this.kanjis);
-				
+
 				if (this.options.autoplay) {
 					this.render();
 				}
@@ -38,7 +38,7 @@
 		step: 0.03,
 		element: "draw",
 		stroke: {
-			animated: false,
+			animated: true,
 			order: {
 				visible: false,
 				attr: {
@@ -105,22 +105,22 @@
 
 			do {
 				this.pointer--;
-				
+
 				// In some cases the text object may be null:
 				//  - Stroke order display disabled
 				//  - Stroke already deleted
 				if (this.kanjis[this.pointer].object.text !== null) {
 					this.kanjis[this.pointer].object.text.remove();
 				}
-				// No worries path can not be null here 
+				// No worries path can not be null here
 				this.kanjis[this.pointer].object.path.remove();
-				
+
 				// Finally properly prepare the object variable
 				this.kanjis[this.pointer].object = {
 					"path" : null,
 					"text" : null
 				};
-				
+
 				// Execute custom callback "erased" here
 				this.options.erased(this.pointer);
 			}
@@ -148,7 +148,7 @@
 					createStroke(that.papers[that.kanjis[that.pointer].char], that.kanjis[that.pointer]);
 					that.pointer++;
 					that.timeouts.shift();
-					
+
 					// Execute custom callback "drew" here
 					that.options.drew(that.pointer);
 				},
@@ -196,7 +196,7 @@
 	// HELPERS
 
 	/**
-	 * Flattens the array of strokes ; 3D > 2D and does some preprocessing while 
+	 * Flattens the array of strokes ; 3D > 2D and does some preprocessing while
 	 * looping through all the strokes:
 	 *  - Maps to a character index
 	 *  - Calculates path length
@@ -263,7 +263,7 @@
 	function createStroke(paper, stroke) {
 		stroke.object.path = paper.path(stroke.path);
 		stroke.object.path.attr(Dmak.options.stroke.attr);
-		
+
 		if (Dmak.options.stroke.animated) {
 			animateStroke(paper, stroke);
 		}
@@ -289,35 +289,35 @@
 	function animateStroke(paper, stroke) {
 		stroke.object.path.attr({"stroke": Dmak.options.stroke.attr.active});
 		stroke.object.path.node.style.transition = stroke.object.path.node.style.WebkitTransition = "none";
-		
+
 		// Set up the starting positions
 		stroke.object.path.node.style.strokeDasharray = stroke.length + " " + stroke.length;
 		stroke.object.path.node.style.strokeDashoffset = stroke.length;
-		
+
 		// Trigger a layout so styles are calculated & the browser
 		// picks up the starting position before animating
 		stroke.object.path.node.getBoundingClientRect();
 		stroke.object.path.node.style.transition = stroke.object.path.node.style.WebkitTransition = "stroke-dashoffset " + stroke.duration + "ms ease";
-		
+
 		// Go!
 		stroke.object.path.node.style.strokeDashoffset = "0";
-		
+
 		// Revert back to the options color when the animation is done.
 		setTimeout(function () {
 			// The stroke object may have been already erased when we reach this timeout
 			if (stroke.object.path === null) {
 				return;
 			}
-			
+
 			if (Dmak.options.stroke.order.visible) {
 				showStrokeOrder(paper, stroke);
 			}
-			
+
 			var color = Dmak.options.stroke.attr.stroke;
 			if(Dmak.options.stroke.attr.stroke === "random") {
 				color = Raphael.getColor();
 			}
-			
+
 			stroke.object.path.node.style.stroke = color;
 			stroke.object.path.node.style.transition = stroke.object.path.node.style.WebkitTransition = "stroke 400ms ease";
 		}, stroke.duration);
