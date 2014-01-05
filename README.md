@@ -46,6 +46,10 @@ Dmak.js comes with a whole set of options to alter the way it behaves. Here is a
 * `autoplay` - start drawing as soon as all SVG files are loaded. `true`
 * `height` - height in pixels of a single paper surface. `109`
 * `width` - width in pixels of a single paper surface. `109`
+* `viewBox.x` - x position of the canvas. `0`
+* `viewBox.y` - y position of the canvas. `0`
+* `viewBox.w` - width of the canvas. `109`
+* `viewBox.h` - height of the canvas. `109`
 * `step` - positive integer which defines the speed of the drawing. `0.03`
 * `element` - DOM element or its ID which is going to be a parent for drawing surface. `"draw"`
 * `stroke.animated` - enable or disable stroke animation. `true`

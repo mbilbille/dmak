@@ -43,6 +43,12 @@
 		autoplay: true,
 		height: 109,
 		width: 109,
+		viewBox: {
+			x: 0,
+			y: 0,
+			w: 109,
+			h: 109
+		},
 		step: 0.03,
 		element: "draw",
 		stroke: {
@@ -247,6 +253,7 @@
 
 		for (i = 0; i < nbChar; i++) {
 			paper = new Raphael(Dmak.options.element, Dmak.options.width + "px", Dmak.options.height + "px");
+			paper.setViewBox(Dmak.options.viewBox.x, Dmak.options.viewBox.y, Dmak.options.viewBox.w, Dmak.options.viewBox.h);
 			paper.canvas.setAttribute("class", "dmak-svg");
 			papers.push(paper);
 		}
@@ -260,8 +267,8 @@
 		var i;
 
 		for (i = 0; i < papers.length; i++) {
-			papers[i].path("M" + (Dmak.options.width / 2) + ",0 L" + (Dmak.options.width / 2) + "," + Dmak.options.height).attr(Dmak.options.grid.attr);
-			papers[i].path("M0," + (Dmak.options.height / 2) + " L" + Dmak.options.width + "," + (Dmak.options.height / 2)).attr(Dmak.options.grid.attr);
+			papers[i].path("M" + (Dmak.options.viewBox.w / 2) + ",0 L" + (Dmak.options.viewBox.w / 2) + "," + Dmak.options.viewBox.h).attr(Dmak.options.grid.attr);
+			papers[i].path("M0," + (Dmak.options.viewBox.h / 2) + " L" + Dmak.options.viewBox.w + "," + (Dmak.options.viewBox.h / 2)).attr(Dmak.options.grid.attr);
 		}
 	}
 
