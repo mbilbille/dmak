@@ -407,6 +407,16 @@
 	function loadSvg(uri, index, charCode, callbacks) {
 		var xhr = new XMLHttpRequest(),
 			code = ("00000" + charCode).slice(-5);
+
+		// Skip space character
+		if(code === "00020" || code === "03000") {
+			callbacks.done(index, {
+				paths: [],
+				texts: []
+			});
+			return;
+		}
+
 		xhr.open("GET", uri + code + ".svg", true);
 		xhr.onreadystatechange = function () {
 			if (xhr.readyState === 4) {
@@ -432,11 +442,11 @@
 			paths = dom.querySelectorAll("path"),
 			texts = dom.querySelectorAll("text"),
 			i;
-			
+
 		for (i = 0; i < paths.length; i++) {
 			data.paths.push(paths[i].getAttribute("d"));
 		}
-		
+
 		for (i = 0; i < texts.length; i++) {
 			data.texts.push({
 				"value" : texts[i].textContent,

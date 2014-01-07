@@ -9,11 +9,6 @@
  */
 
 svg.dmak-svg {
-	border-left: 1px solid #CCCCCC;
-	border-top: 1px solid #CCCCCC;
-	border-bottom: 1px solid #CCCCCC;
-}
-
-svg.dmak-svg:last-child {
-	border-right: 1px solid #CCCCCC;
+	border: 1px solid #CCCCCC;
+	margin-right: 1px;
 }
