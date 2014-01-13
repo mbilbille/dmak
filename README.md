@@ -74,10 +74,10 @@ For basic samples please refer to [demo](https://github.com/mbilbille/dmak/tree/
 
 ## Compatibility
 - Chrome 1.0+
-- Firefox 16.0+ (see: [bugzilla.mozilla.org/show_bug.cgi?id=902879](https://bugzilla.mozilla.org/show_bug.cgi?id=902879))
+- Firefox 16.0+ (26.0+ may be required to properly render drawing animation)
 - Opera 17.0+
 - Safari 3.0+
-- ~~IE~~
+- IE 10.0+ (animation not supported)
 
 ## Inspirations
 
