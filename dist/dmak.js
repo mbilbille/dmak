@@ -52,7 +52,10 @@
 		step: 0.03,
 		element: "draw",
 		stroke: {
-			animated: true,
+			animated : {
+				drawing : true,
+				erasing : true
+			},
 			order: {
 				visible: false,
 				attr: {
@@ -102,8 +105,7 @@
 		 * Clean all strokes on papers.
 		 */
 		erase: function (end) {
-			// Cannot have two rendering process for
-			// the same draw. Keep it cool.
+			// Cannot have two rendering process for the same draw. Keep it cool.
 			if (this.timeouts.length) {
 				return false;
 			}
@@ -119,21 +121,7 @@
 
 			do {
 				this.pointer--;
-
-				// In some cases the text object may be null:
-				//  - Stroke order display disabled
-				//  - Stroke already deleted
-				if (this.kanjis[this.pointer].object.text !== null) {
-					this.kanjis[this.pointer].object.text.remove();
-				}
-				// No worries path can not be null here
-				this.kanjis[this.pointer].object.path.remove();
-
-				// Finally properly prepare the object variable
-				this.kanjis[this.pointer].object = {
-					"path" : null,
-					"text" : null
-				};
+				eraseStroke(this.kanjis[this.pointer]);
 
 				// Execute custom callback "erased" here
 				this.options.erased(this.pointer);
@@ -153,13 +141,13 @@
 			}
 
 			if (typeof end === "undefined") {
-                end = this.kanjis.length;
-            } else if (end > this.kanjis.length) {
+				end = this.kanjis.length;
+			} else if (end > this.kanjis.length) {
 				return false;
 			}
 
 			var cb = function (that) {
-					createStroke(that.papers[that.kanjis[that.pointer].char], that.kanjis[that.pointer]);
+					drawStroke(that.papers[that.kanjis[that.pointer].char], that.kanjis[that.pointer]);
 					that.pointer++;
 					that.timeouts.shift();
 
@@ -167,15 +155,13 @@
 					that.options.drew(that.pointer);
 				},
 				delay = 0,
-				i,
-				t;
+				i;
 
 			for (i = this.pointer; i < end; i++) {
-				if (!Dmak.options.stroke.animated || delay <= 0) {
+				if (!Dmak.options.stroke.animated.drawing || delay <= 0) {
 					cb(this);
 				} else {
-					t = setTimeout(cb, delay, this);
-					this.timeouts.push(t);
+					this.timeouts.push(setTimeout(cb, delay, this));
 				}
 				delay += this.kanjis[i].duration;
 			}
@@ -273,18 +259,66 @@
 	}
 
 	/**
+	 * Remove a single stroke ; deletion can be animated if set as so.
+	 */
+	function eraseStroke(stroke) {
+		// In some cases the text object may be null:
+		//  - Stroke order display disabled
+		//  - Stroke already deleted
+		if (stroke.object.text !== null) {
+			stroke.object.text.remove();
+		}
+
+		if (Dmak.options.stroke.animated.erasing) {
+			stroke.object.path.node.style.stroke = Dmak.options.stroke.attr.active;
+			animateStroke(stroke, -1, function() {
+				stroke.object.path.remove();
+
+				// Finally properly prepare the object variable
+				stroke.object = {
+					"path" : null,
+					"text" : null
+				};
+			});
+		}
+		else {
+			cb();
+		}
+	}
+
+	/**
 	 * Draw a single stroke ; drawing can be animated if set as so.
 	 */
-	function createStroke(paper, stroke) {
+	function drawStroke(paper, stroke) {
+		var cb = function() {
+
+			// The stroke object may have been already erased when we reach this timeout
+			if (stroke.object.path === null) {
+				return;
+			}
+
+			if (Dmak.options.stroke.order.visible) {
+				showStrokeOrder(paper, stroke);
+			}
+
+			var color = Dmak.options.stroke.attr.stroke;
+			if(Dmak.options.stroke.attr.stroke === "random") {
+				color = Raphael.getColor();
+			}
+
+			// Revert back to the default color.
+			stroke.object.path.node.style.stroke = color;
+			stroke.object.path.node.style.transition = stroke.object.path.node.style.WebkitTransition = "stroke 400ms ease";
+		};
+
 		stroke.object.path = paper.path(stroke.path);
 		stroke.object.path.attr(Dmak.options.stroke.attr);
 
-		if (Dmak.options.stroke.animated) {
-			animateStroke(paper, stroke);
+		if (Dmak.options.stroke.animated.drawing) {
+			animateStroke(stroke, 1, cb);
 		}
-		else if(Dmak.options.stroke.attr.stroke === "random") {
-			// Get random color if set so and stroke animation is disable
-			stroke.object.path.node.style.stroke = Raphael.getColor();
+		else {
+			cb();
 		}
 	}
 
@@ -301,13 +335,13 @@
 	 * Based on the great article wrote by Jake Archibald
 	 * http://jakearchibald.com/2013/animated-line-drawing-svg/
 	 */
-	function animateStroke(paper, stroke) {
+	function animateStroke(stroke, direction, callback) {
 		stroke.object.path.attr({"stroke": Dmak.options.stroke.attr.active});
 		stroke.object.path.node.style.transition = stroke.object.path.node.style.WebkitTransition = "none";
 
 		// Set up the starting positions
 		stroke.object.path.node.style.strokeDasharray = stroke.length + " " + stroke.length;
-		stroke.object.path.node.style.strokeDashoffset = stroke.length;
+		stroke.object.path.node.style.strokeDashoffset = (direction > 0) ? stroke.length : 0;
 
 		// Trigger a layout so styles are calculated & the browser
 		// picks up the starting position before animating
@@ -315,27 +349,10 @@
 		stroke.object.path.node.style.transition = stroke.object.path.node.style.WebkitTransition = "stroke-dashoffset " + stroke.duration + "ms ease";
 
 		// Go!
-		stroke.object.path.node.style.strokeDashoffset = "0";
+		stroke.object.path.node.style.strokeDashoffset = (direction > 0) ? "0" : stroke.length;
 
-		// Revert back to the options color when the animation is done.
-		setTimeout(function () {
-			// The stroke object may have been already erased when we reach this timeout
-			if (stroke.object.path === null) {
-				return;
-			}
-
-			if (Dmak.options.stroke.order.visible) {
-				showStrokeOrder(paper, stroke);
-			}
-
-			var color = Dmak.options.stroke.attr.stroke;
-			if(Dmak.options.stroke.attr.stroke === "random") {
-				color = Raphael.getColor();
-			}
-
-			stroke.object.path.node.style.stroke = color;
-			stroke.object.path.node.style.transition = stroke.object.path.node.style.WebkitTransition = "stroke 400ms ease";
-		}, stroke.duration);
+		// Execute the callback once the animation is done.
+		setTimeout(callback, stroke.duration);
 	}
 
 	/**
