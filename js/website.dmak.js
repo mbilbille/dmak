@@ -8,7 +8,7 @@ $.fn.addSliderSegments = function (amount) {
     });
 };
 
-// Implement our own repeat method() which copies the current string a given 
+// Implement our own repeat method() which copies the current string a given
 // times and returns the new string
 String.prototype.repeat = function( num )
 {
@@ -17,26 +17,26 @@ String.prototype.repeat = function( num )
 
 var p;
 var options = {
-    step : 0.03,
-    uri: 'kanji/',
+    step : 0.015,
+    uri: "kanji/",
     stroke: {
         order: {
-            'visible' : false,
+            visible : false,
             attr : {
-                'fill' : '#CDC3C7'
+                "fill" : "#CDC3C7"
             }
         },
         attr : {
-            'active': '#E74C3C',
-            'stroke': '#7F8C8D',
-            'stroke-width': 4,
+            "active": "#E74C3C",
+            "stroke": "#7F8C8D",
+            "stroke-width": 4,
         }
     },
     grid : {
         show: true,
     },
     loaded: function(strokes) {
-        $('.logo').toggleClass('flip');
+        $(".logo").toggleClass("flip");
         $(".wrap-draw").addClass("slideDown");
         $slider = $("#slider");
         if ($slider.length > 0) {
@@ -49,9 +49,9 @@ var options = {
                 range: "min",
                 slide: function(event, ui) {
                     var range = ui.value - p;
-                    var action = 'forward';
+                    var action = "forward";
                     if(range < 0) {
-                        action = 'rewind';
+                        action = "rewind";
                         range = range * -1;
                     }
                     p = ui.value;
@@ -86,9 +86,15 @@ $(function() {
         var word = window.location.hash.substring(1);
         // Properly decode UTF8 characters
         word = decodeURIComponent(word);
-        ga('send', 'event', 'url', 'search', word);
-        $("#draw").dmak(word, options);
+
     }
+    else {
+        word = "ようこそ！"
+    }
+
+    // First automatic drawing.
+    ga("send", "event", "url", "search", word);
+    $("#draw").dmak(word, options);
 
     $('#mybtn').click(function(e) {
         e.preventDefault();
@@ -154,7 +160,7 @@ $(function() {
         options.stroke.attr.active = $(this).val();
     });
 
-    var speeds = [0.1, 0.05, 0.02, 0.009, 0.005]
+    var speeds = [0.1, 0.05, 0.015, 0.009, 0.005]
     var $sliderSpeed = $("#dmak-slider-speed");
     $sliderSpeed.slider({
         min: 1,
@@ -167,7 +173,7 @@ $(function() {
         }
     }).addSliderSegments($sliderSpeed.slider("option").max);
 
-    $("#dmak-order").html(options.stroke.order.visible ? 'ON' : 'OFF');
+    $("#dmak-order").html(options.stroke.order.visible ? "ON" : "OFF");
     $( document ).on( "click", "#dmak-order", function(e){
         e.preventDefault();
         if($(this).html() == "ON") {
@@ -179,7 +185,7 @@ $(function() {
         }
     });
 
-    $("#dmak-grid").html(options.grid.show ? 'ON' : 'OFF');
+    $("#dmak-grid").html(options.grid.show ? "ON" : "OFF");
     $( document ).on( "click", "#dmak-grid", function(e){
         e.preventDefault();
         if($(this).html() == "ON") {
