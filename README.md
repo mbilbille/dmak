@@ -1,6 +1,6 @@
 # Draw Me A Kanji [![Build Status](https://travis-ci.org/mbilbille/dmak.png?branch=master)](https://travis-ci.org/mbilbille/dmak) [![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/mbilbille/dmak/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
 
-> A funny drawer for all your Japanese writings
+> Render your Japanese writings with fun and taste
 
 ![Draw Me A Kanji](https://raw.github.com/mbilbille/dmak/gh-pages/images/sample.png)
 
