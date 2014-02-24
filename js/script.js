@@ -123,7 +123,9 @@ $(function() {
 
     // First automatic drawing.
     ga("send", "event", "url", "search", word);
-    $("#draw").dmak(word, options);
+    window.setTimeout(function() {
+        $("#draw").dmak(word, options);
+    }, 2000);
 
     $('#mybtn').click(function(e) {
         e.preventDefault();
