@@ -12,17 +12,19 @@
 		this.timeouts = [];
 
 		if (!this.options.skipLoad) {
-			var loader = new DmakLoader(this.options.uri);
+			var loader = new DmakLoader(this.options.uri),
+				self = this;
+
 			loader.load(text, function (data) {
-				this.prepare(data);
+				self.prepare(data);
 
 				// Execute custom callback "loaded" here
-				this.options.loaded(this.kanjis);
+				self.options.loaded(self.kanjis);
 
-				if (this.options.autoplay) {
-					this.render();
+				if (self.options.autoplay) {
+					self.render();
 				}
-			}.bind(this));
+			});
 		}
 	};
 
@@ -261,17 +263,19 @@
 			stroke.object.text.remove();
 		}
 
+		var cb = function() {
+			stroke.object.path.remove();
+
+			// Finally properly prepare the object variable
+			stroke.object = {
+				"path" : null,
+				"text" : null
+			};
+		};
+
 		if (Dmak.options.stroke.animated.erasing) {
 			stroke.object.path.node.style.stroke = Dmak.options.stroke.attr.active;
-			animateStroke(stroke, -1, function() {
-				stroke.object.path.remove();
-
-				// Finally properly prepare the object variable
-				stroke.object = {
-					"path" : null,
-					"text" : null
-				};
-			});
+			animateStroke(stroke, -1, cb);
 		}
 		else {
 			cb();
