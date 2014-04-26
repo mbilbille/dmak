@@ -54,8 +54,8 @@ Dmak.js comes with a whole set of options to alter the way it behaves. Here is a
 * `element` - DOM element or its ID which is going to be a parent for drawing surface. `"draw"`
 * `stroke.animated` - enable or disable stroke animation. `true`
 * `stroke.order.visible` - display stroke order. `false`
-* `stroke.order.visible.attr.font-size` - stroke order font size in pixels. `8`
-* `stroke.order.visible.attr.fill` - stroke order color. `#999999`
+* `stroke.order.attr.font-size` - stroke order font size in pixels. `8`
+* `stroke.order.attr.fill` - stroke order color. `#999999`
 * `stroke.attr.active` - currently drawn stroke color. `"#BF0000"`
 * `stroke.attr.stroke` - stroke color (can use "random" keyword here for random color). `"#2C2C2C"`
 * `stroke.attr.stroke-width` - stroke width in pixels. `4`
