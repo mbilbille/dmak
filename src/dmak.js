@@ -9,7 +9,11 @@
 		this.strokes = [];
 		this.papers = [];
 		this.pointer = 0;
-		this.timeouts = [];
+		this.timeouts = {
+			play : [],
+			erasing : [],
+			drawing : []
+		};
 
 		if (!this.options.skipLoad) {
 			var loader = new DmakLoader(this.options.uri),
@@ -115,7 +119,7 @@
 
 			do {
 				this.pointer--;
-				eraseStroke(this.kanjis[this.pointer]);
+				eraseStroke(this.kanjis[this.pointer], this.timeouts.erasing);
 
 				// Execute custom callback "erased" here
 				this.options.erased(this.pointer);
@@ -141,21 +145,28 @@
 			}
 
 			var cb = function (that) {
-					drawStroke(that.papers[that.kanjis[that.pointer].char], that.kanjis[that.pointer]);
-					that.pointer++;
-					that.timeouts.shift();
+					drawStroke(that.papers[that.kanjis[that.pointer].char], that.kanjis[that.pointer], that.timeouts.drawing);
 
 					// Execute custom callback "drew" here
 					that.options.drew(that.pointer);
+
+					that.pointer++;
+					that.timeouts.play.shift();
 				},
 				delay = 0,
 				i;
+
+			// Before drawing clear any remaining erasing timeouts
+			for (i = 0; i < this.timeouts.erasing.length; i++) {
+				window.clearTimeout(this.timeouts.erasing[i]);
+				this.timeouts.erasing = [];
+			}
 
 			for (i = this.pointer; i < end; i++) {
 				if (!Dmak.options.stroke.animated.drawing || delay <= 0) {
 					cb(this);
 				} else {
-					this.timeouts.push(setTimeout(cb, delay, this));
+					this.timeouts.play.push(setTimeout(cb, delay, this));
 				}
 				delay += this.kanjis[i].duration;
 			}
@@ -165,10 +176,10 @@
 		 * Pause rendering
 		 */
 		pause: function () {
-			for (var i = 0; i < this.timeouts.length; i++) {
-				window.clearTimeout(this.timeouts[i]);
+			for (var i = 0; i < this.timeouts.play.length; i++) {
+				window.clearTimeout(this.timeouts.play[i]);
 			}
-			this.timeouts = [];
+			this.timeouts.play = [];
 		},
 
 		/**
@@ -255,7 +266,7 @@
 	/**
 	 * Remove a single stroke ; deletion can be animated if set as so.
 	 */
-	function eraseStroke(stroke) {
+	function eraseStroke(stroke, timeouts) {
 		// In some cases the text object may be null:
 		//  - Stroke order display disabled
 		//  - Stroke already deleted
@@ -271,11 +282,13 @@
 				"path" : null,
 				"text" : null
 			};
+
+			timeouts.shift();
 		};
 
 		if (Dmak.options.stroke.animated.erasing) {
 			stroke.object.path.node.style.stroke = Dmak.options.stroke.attr.active;
-			animateStroke(stroke, -1, cb);
+			timeouts.push(animateStroke(stroke, -1, cb));
 		}
 		else {
 			cb();
@@ -285,7 +298,7 @@
 	/**
 	 * Draw a single stroke ; drawing can be animated if set as so.
 	 */
-	function drawStroke(paper, stroke) {
+	function drawStroke(paper, stroke, timeouts) {
 		var cb = function() {
 
 			// The stroke object may have been already erased when we reach this timeout
@@ -305,6 +318,8 @@
 			// Revert back to the default color.
 			stroke.object.path.node.style.stroke = color;
 			stroke.object.path.node.style.transition = stroke.object.path.node.style.WebkitTransition = "stroke 400ms ease";
+
+			timeouts.shift();
 		};
 
 		stroke.object.path = paper.path(stroke.path);
@@ -347,8 +362,9 @@
 		// Go!
 		stroke.object.path.node.style.strokeDashoffset = (direction > 0) ? "0" : stroke.length;
 
-		// Execute the callback once the animation is done.
-		setTimeout(callback, stroke.duration);
+		// Execute the callback once the animation is done
+		// and return the timeout id.
+		return setTimeout(callback, stroke.duration);
 	}
 
 	/**
