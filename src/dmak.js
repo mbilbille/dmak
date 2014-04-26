@@ -104,7 +104,7 @@
 		 */
 		erase: function (end) {
 			// Cannot have two rendering process for the same draw. Keep it cool.
-			if (this.timeouts.length) {
+			if (this.timeouts.play.length) {
 				return false;
 			}
 
@@ -134,7 +134,7 @@
 
 			// Cannot have two rendering process for
 			// the same draw. Keep it cool.
-			if (this.timeouts.length) {
+			if (this.timeouts.play.length) {
 				return false;
 			}
 
@@ -306,10 +306,6 @@
 				return;
 			}
 
-			if (Dmak.options.stroke.order.visible) {
-				showStrokeOrder(paper, stroke);
-			}
-
 			var color = Dmak.options.stroke.attr.stroke;
 			if(Dmak.options.stroke.attr.stroke === "random") {
 				color = Raphael.getColor();
@@ -324,6 +320,10 @@
 
 		stroke.object.path = paper.path(stroke.path);
 		stroke.object.path.attr(Dmak.options.stroke.attr);
+
+		if (Dmak.options.stroke.order.visible) {
+			showStrokeOrder(paper, stroke);
+		}
 
 		if (Dmak.options.stroke.animated.drawing) {
 			animateStroke(stroke, 1, cb);
