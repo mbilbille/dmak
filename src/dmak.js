@@ -214,14 +214,15 @@
 			j;
 
 		for (i = 0; i < data.length; i++) {
-			for (j = 0; j < data[i].paths.length; j++) {
-				length = Raphael.getTotalLength(data[i].paths[j]);
+			for (j = 0; j < data[i].length; j++) {
+				length = Raphael.getTotalLength(data[i][j].path);
 				stroke = {
 					"char": i,
 					"length": length,
 					"duration": length * Dmak.options.step * 1000,
-					"path": data[i].paths[j],
-					"text": data[i].texts[j],
+					"path": data[i][j].path,
+					"groups" : data[i][j].groups,
+					"text": data[i][j].text,
 					"object": {
 						"path" : null,
 						"text": null

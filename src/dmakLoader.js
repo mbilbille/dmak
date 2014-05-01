@@ -57,7 +57,7 @@
 		xhr.onreadystatechange = function () {
 			if (xhr.readyState === 4) {
 				if (xhr.status === 200) {
-					callbacks.done(index, parseResponse(xhr.response));
+					callbacks.done(index, parseResponse(xhr.response, code));
 				} else {
 					callbacks.error(xhr.statusText);
 				}
@@ -69,27 +69,45 @@
 	/**
 	 * Simple parser to extract paths and texts data.
 	 */
-	function parseResponse(response) {
-		var data = {
-				paths: [],
-				texts: []
-			},
+	function parseResponse(response, code) {
+		var data = [],
 			dom = new DOMParser().parseFromString(response, "application/xml"),
-			paths = dom.querySelectorAll("path"),
 			texts = dom.querySelectorAll("text"),
+			groups = [],
 			i;
+		
+		// Private recursice function to parse DOM content	
+		function __parse(element) {
+            var children = element.children,
+                i;
 
-		for (i = 0; i < paths.length; i++) {
-			data.paths.push(paths[i].getAttribute("d"));
+            for(i = 0; i < children.length; i++) {
+                if(children[i].tagName === "g") {
+                    groups.push(children[i].getAttribute("id"));
+                    __parse(children[i]);
+                    groups.splice(groups.indexOf(children[i].getAttribute("id")), 1);
+                }
+                else if(children[i].tagName === "path") {
+                    data.push({
+                        "path" : children[i].getAttribute("d"),
+                        "groups" : groups.slice(0)
+                    });
+                }
+            }
 		}
 
+        // Start parsing
+		__parse(dom.getElementById("kvg:" + code));
+
+        // And finally add order mark information
 		for (i = 0; i < texts.length; i++) {
-			data.texts.push({
+			data[i].text = {
 				"value" : texts[i].textContent,
 				"x" : texts[i].getAttribute("transform").split(" ")[4],
 				"y" : texts[i].getAttribute("transform").split(" ")[5].replace(")", "")
-			});
+			};
 		}
+		
 		return data;
 	}
 
