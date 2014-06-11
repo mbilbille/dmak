@@ -10,8 +10,8 @@
 Using dmak.js is easy, a lot easier than writing kanjis, trust me!
 
 **Prerequisite**
-To simplify all the work with SVG, we use the cool JavaScript library *Raphaël* ➲ [Download](http://github.com/DmitryBaranovskiy/raphael/raw/master/raphael-min.js)
-*and no worries this is the ONLY dependency.*
+All the hard work with SVG is done by *[Raphaël](http://github.com/DmitryBaranovskiy/raphael/raw/master/raphael-min.js)*, a cool and simple Javascript library to play with vector graphic on the Web.
+And... nothing else! This is the ONLY unique dependency.
 
 Once you are all set, include both `raphael.js` and `dmak.js` files in your HTML file.
 
@@ -38,7 +38,7 @@ Up to you to use either:
 ```
 **NOTE:** *You need to include the additional `jquery.dmak.js` file*
 
-## Options
+## Customization
 Dmak.js comes with a whole set of options to alter the way it behaves. Here is an explicit list of all parameters available to you followed by their default value.
 
 * `uri` - path to the SVG files folder. `""`
