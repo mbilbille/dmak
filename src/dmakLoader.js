@@ -76,9 +76,9 @@
 			groups = [],
 			i;
 		
-		// Private recursice function to parse DOM content	
+		// Private recursive function to parse DOM content
 		function __parse(element) {
-            var children = element.children,
+            var children = element.childNodes,
                 i;
 
             for(i = 0; i < children.length; i++) {
