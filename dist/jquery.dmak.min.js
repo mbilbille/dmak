@@ -1,5 +1,5 @@
 /*
- *  Draw Me A Kanji - v0.2.0
+ *  Draw Me A Kanji - v0.3.1
  *  A funny drawer for your Japanese writings
  *  http://drawmeakanji.com
  *

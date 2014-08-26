@@ -1,5 +1,5 @@
 /*
- *  Draw Me A Kanji - v0.2.0
+ *  Draw Me A Kanji - v0.3.1
  *  A funny drawer for your Japanese writings
  *  http://drawmeakanji.com
  *
@@ -478,9 +478,9 @@
 			groups = [],
 			i;
 		
-		// Private recursice function to parse DOM content	
+		// Private recursive function to parse DOM content
 		function __parse(element) {
-            var children = element.children,
+            var children = element.childNodes,
                 i;
 
             for(i = 0; i < children.length; i++) {
