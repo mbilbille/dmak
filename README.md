@@ -2,7 +2,7 @@
 
 > Render your Japanese writings with fun and taste
 
-![Draw Me A Kanji](https://raw.github.com/mbilbille/dmak/gh-pages/images/sample.png)
+![Draw Me A Kanji](https://raw.github.com/mbilbille/dmak/gh-pages/images/sample.gif)
 
 *For the sake of simplicity, "Draw Me A Kanji" is shortened to dmak*
 
