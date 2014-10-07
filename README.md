@@ -7,17 +7,15 @@
 *For the sake of simplicity, "Draw Me A Kanji" is shortened to dmak*
 
 ## Usage
-Using dmak.js is easy, a lot easier than writing kanjis, trust me!
+Using dmak.js is easy, a lot easier than writing kanjis!
 
 **Prerequisite**
 All the hard work with SVG is done by *[Raphaël](http://github.com/DmitryBaranovskiy/raphael/raw/master/raphael-min.js)*, a cool and simple Javascript library to play with vector graphic on the Web.
-And... nothing else! This is the ONLY unique dependency.
-
-Once you are all set, include both `raphael.js` and `dmak.js` files in your HTML file.
+And... that's it! Include both `raphael.js` and `dmak.js` files in your HTML file.
 
 Up to you to use either:
 
-#### Pure JavaScript
+#### Vanilla JS
 ```html
 <div id="draw"></div>
 <script>
