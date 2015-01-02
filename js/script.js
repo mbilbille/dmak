@@ -48,6 +48,8 @@ var p;
 var options = {
     step : 0.015,
     uri: "kanji/",
+    height: 109,
+    width: 109,
     stroke: {
         order: {
             visible : false,
@@ -108,7 +110,8 @@ var options = {
 
 $(function() {
 
-    var blankDrawer = $(".wrap-draw").html();
+    var blankDrawer = $(".wrap-draw").html(),
+        drawerWidth = $("#draw").width();
 
     // Check if we have a word in the URL
     if(window.location.hash) {
@@ -123,6 +126,12 @@ $(function() {
 
     // First automatic drawing.
     ga("send", "event", "url", "search", word);
+    console.log(drawerWidth, word.length);
+    if(drawerWidth / word.length < options.width) {
+        options.width = Math.floor(drawerWidth / word.length);
+        options.height = options.width;
+    }
+    console.log(options);
     window.setTimeout(function() {
         $("#draw").dmak(word, options);
     }, 2000);
