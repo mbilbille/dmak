@@ -5,8 +5,7 @@
 	// Create a safe reference to the DrawMeAKanji object for use below.
 	var Dmak = function (text, options) {
 		this.text = text;
-		this.options = extend(Dmak.options, options);
-		this.strokes = [];
+		this.options = extend(extend({}, Dmak.options), options);
 		this.papers = [];
 		this.pointer = 0;
 		this.timeouts = {
@@ -380,9 +379,10 @@
 		}
 
 		for (key in replacement) {
-			if (typeof result[key] === "object") {
+			if (typeof replacement[key] === "object") {
+				result[key] = Array.isArray(replacement[key]) ? [] : {};
 				result[key] = extend(result[key], replacement[key]);
-			} else if (result.hasOwnProperty(key)) {
+			} else {
 				result[key] = replacement[key];
 			}
 		}
