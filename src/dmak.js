@@ -379,7 +379,9 @@
 
 		for (key in replacement) {
 			if (typeof replacement[key] === "object") {
-				result[key] = Array.isArray(replacement[key]) ? [] : {};
+				if (typeof result[key] === "undefined") {
+					result[key] = Object.prototype.toString.call(replacement[key]).indexOf("Array") >= 0 ? [] : {};
+				}
 				result[key] = extend(result[key], replacement[key]);
 			} else {
 				result[key] = replacement[key];
