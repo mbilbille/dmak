@@ -5,7 +5,8 @@
 	// Create a safe reference to the DrawMeAKanji object for use below.
 	var Dmak = function (text, options) {
 		this.text = text;
-		this.options = extend(Dmak.options, options);
+		// Fix #18 clone `default` to support several instance in parallel
+		this.options = assign(clone(Dmak.default), options);
 		this.strokes = [];
 		this.papers = [];
 		this.pointer = 0;
@@ -23,7 +24,7 @@
 				self.prepare(data);
 
 				// Execute custom callback "loaded" here
-				self.options.loaded(self.kanjis);
+				self.options.loaded(self.strokes);
 
 				if (self.options.autoplay) {
 					self.render();
@@ -35,7 +36,7 @@
 	// Current version.
 	Dmak.VERSION = "0.2.0";
 
-	Dmak.options = {
+	Dmak.default = {
 		uri: "",
 		skipLoad: false,
 		autoplay: true,
@@ -79,10 +80,13 @@
 			}
 		},
 		loaded: function () {
+			// a callback
 		},
 		erased: function () {
+			// a callback
 		},
 		drew: function () {
+			// a callback
 		}
 	};
 
@@ -92,10 +96,10 @@
 		 * Prepare kanjis and papers for rendering.
 		 */
 		prepare: function (data) {
-			this.kanjis = preprocessStrokes(data);
-			this.papers = giveBirthToRaphael(data.length);
+			this.strokes = preprocessStrokes(data, this.options);
+			this.papers = giveBirthToRaphael(data.length, this.options);
 			if (this.options.grid.show) {
-				showGrid(this.papers);
+				showGrid(this.papers, this.options);
 			}
 		},
 
@@ -119,7 +123,7 @@
 
 			do {
 				this.pointer--;
-				eraseStroke(this.kanjis[this.pointer], this.timeouts.erasing);
+				eraseStroke(this.strokes[this.pointer], this.timeouts.erasing, this.options);
 
 				// Execute custom callback "erased" here
 				this.options.erased(this.pointer);
@@ -139,13 +143,13 @@
 			}
 
 			if (typeof end === "undefined") {
-				end = this.kanjis.length;
-			} else if (end > this.kanjis.length) {
+				end = this.strokes.length;
+			} else if (end > this.strokes.length) {
 				return false;
 			}
 
 			var cb = function (that) {
-					drawStroke(that.papers[that.kanjis[that.pointer].char], that.kanjis[that.pointer], that.timeouts.drawing);
+					drawStroke(that.papers[that.strokes[that.pointer].char], that.strokes[that.pointer], that.timeouts.drawing, that.options);
 
 					// Execute custom callback "drew" here
 					that.options.drew(that.pointer);
@@ -163,12 +167,12 @@
 			}
 
 			for (i = this.pointer; i < end; i++) {
-				if (!Dmak.options.stroke.animated.drawing || delay <= 0) {
+				if (!this.options.stroke.animated.drawing || delay <= 0) {
 					cb(this);
 				} else {
 					this.timeouts.play.push(setTimeout(cb, delay, this));
 				}
-				delay += this.kanjis[i].duration;
+				delay += this.strokes[i].duration;
 			}
 		},
 
@@ -206,7 +210,7 @@
 	 *  - Maps to a character index
 	 *  - Calculates path length
 	 */
-	function preprocessStrokes(data) {
+	function preprocessStrokes(data, options) {
 		var strokes = [],
 			stroke,
 			length,
@@ -219,7 +223,7 @@
 				stroke = {
 					"char": i,
 					"length": length,
-					"duration": length * Dmak.options.step * 1000,
+					"duration": length * options.step * 1000,
 					"path": data[i][j].path,
 					"groups" : data[i][j].groups,
 					"text": data[i][j].text,
@@ -238,14 +242,14 @@
 	/**
 	 * Init Raphael paper objects
 	 */
-	function giveBirthToRaphael(nbChar) {
+	function giveBirthToRaphael(nbChar, options) {
 		var papers = [],
 			paper,
 			i;
 
 		for (i = 0; i < nbChar; i++) {
-			paper = new Raphael(Dmak.options.element, Dmak.options.width + "px", Dmak.options.height + "px");
-			paper.setViewBox(Dmak.options.viewBox.x, Dmak.options.viewBox.y, Dmak.options.viewBox.w, Dmak.options.viewBox.h);
+			paper = new Raphael(options.element, options.width + "px", options.height + "px");
+			paper.setViewBox(options.viewBox.x, options.viewBox.y, options.viewBox.w, options.viewBox.h);
 			paper.canvas.setAttribute("class", "dmak-svg");
 			papers.push(paper);
 		}
@@ -255,19 +259,19 @@
 	/**
 	 * Draw the background grid
 	 */
-	function showGrid(papers) {
+	function showGrid(papers, options) {
 		var i;
 
 		for (i = 0; i < papers.length; i++) {
-			papers[i].path("M" + (Dmak.options.viewBox.w / 2) + ",0 L" + (Dmak.options.viewBox.w / 2) + "," + Dmak.options.viewBox.h).attr(Dmak.options.grid.attr);
-			papers[i].path("M0," + (Dmak.options.viewBox.h / 2) + " L" + Dmak.options.viewBox.w + "," + (Dmak.options.viewBox.h / 2)).attr(Dmak.options.grid.attr);
+			papers[i].path("M" + (options.viewBox.w / 2) + ",0 L" + (options.viewBox.w / 2) + "," + options.viewBox.h).attr(options.grid.attr);
+			papers[i].path("M0," + (options.viewBox.h / 2) + " L" + options.viewBox.w + "," + (options.viewBox.h / 2)).attr(options.grid.attr);
 		}
 	}
 
 	/**
 	 * Remove a single stroke ; deletion can be animated if set as so.
 	 */
-	function eraseStroke(stroke, timeouts) {
+	function eraseStroke(stroke, timeouts, options) {
 		// In some cases the text object may be null:
 		//  - Stroke order display disabled
 		//  - Stroke already deleted
@@ -287,9 +291,9 @@
 			timeouts.shift();
 		};
 
-		if (Dmak.options.stroke.animated.erasing) {
-			stroke.object.path.node.style.stroke = Dmak.options.stroke.attr.active;
-			timeouts.push(animateStroke(stroke, -1, cb));
+		if (options.stroke.animated.erasing) {
+			stroke.object.path.node.style.stroke = options.stroke.attr.active;
+			timeouts.push(animateStroke(stroke, -1, options, cb));
 		}
 		else {
 			cb();
@@ -299,7 +303,7 @@
 	/**
 	 * Draw a single stroke ; drawing can be animated if set as so.
 	 */
-	function drawStroke(paper, stroke, timeouts) {
+	function drawStroke(paper, stroke, timeouts, options) {
 		var cb = function() {
 
 			// The stroke object may have been already erased when we reach this timeout
@@ -307,8 +311,8 @@
 				return;
 			}
 
-			var color = Dmak.options.stroke.attr.stroke;
-			if(Dmak.options.stroke.attr.stroke === "random") {
+			var color = options.stroke.attr.stroke;
+			if(options.stroke.attr.stroke === "random") {
 				color = Raphael.getColor();
 			}
 
@@ -320,14 +324,14 @@
 		};
 
 		stroke.object.path = paper.path(stroke.path);
-		stroke.object.path.attr(Dmak.options.stroke.attr);
+		stroke.object.path.attr(options.stroke.attr);
 
-		if (Dmak.options.stroke.order.visible) {
-			showStrokeOrder(paper, stroke);
+		if (options.stroke.order.visible) {
+			showStrokeOrder(paper, stroke, options);
 		}
 
-		if (Dmak.options.stroke.animated.drawing) {
-			animateStroke(stroke, 1, cb);
+		if (options.stroke.animated.drawing) {
+			animateStroke(stroke, 1, options, cb);
 		}
 		else {
 			cb();
@@ -337,9 +341,9 @@
 	/**
 	 * Draw a single next to
 	 */
-	function showStrokeOrder(paper, stroke) {
+	function showStrokeOrder(paper, stroke, options) {
 		stroke.object.text = paper.text(stroke.text.x, stroke.text.y, stroke.text.value);
-		stroke.object.text.attr(Dmak.options.stroke.order.attr);
+		stroke.object.text.attr(options.stroke.order.attr);
 	}
 
 	/**
@@ -347,8 +351,8 @@
 	 * Based on the great article wrote by Jake Archibald
 	 * http://jakearchibald.com/2013/animated-line-drawing-svg/
 	 */
-	function animateStroke(stroke, direction, callback) {
-		stroke.object.path.attr({"stroke": Dmak.options.stroke.attr.active});
+	function animateStroke(stroke, direction, options, callback) {
+		stroke.object.path.attr({"stroke": options.stroke.attr.active});
 		stroke.object.path.node.style.transition = stroke.object.path.node.style.WebkitTransition = "none";
 
 		// Set up the starting positions
@@ -369,24 +373,35 @@
 	}
 
 	/**
-	 * Simplistic helper function for extending objects
+	 * Helper function to clone an object
 	 */
-	function extend(defaults, replacement) {
-		var result = defaults,
-			key;
-
-		if (arguments.length !== 2) {
-			throw new Error("Missing arguments in extend function");
+	function clone(object) {
+		if (object === null || typeof object !== "object") {
+			return object;
 		}
 
-		for (key in replacement) {
-			if (typeof result[key] === "object") {
-				result[key] = extend(result[key], replacement[key]);
-			} else if (result.hasOwnProperty(key)) {
-				result[key] = replacement[key];
+		var temp = object.constructor(); // give temp the original object's constructor
+		for (var key in object) {
+			temp[key] = clone(object[key]);
+			}
+
+		return temp;
+	}
+
+	/**
+	 * Helper function to copy own properties over to the destination object.
+	 */
+	function assign(source, replacement) {
+		if (arguments.length !== 2) {
+			throw new Error("Missing arguments in assign function");
+		}
+
+		for (var key in source) {
+			if (replacement.hasOwnProperty(key)) {
+				source[key] = (typeof replacement[key] === "object") ? assign(source[key], replacement[key]) : replacement[key];
 			}
 		}
-		return result;
+		return source;
 	}
 
 	window.Dmak = Dmak;

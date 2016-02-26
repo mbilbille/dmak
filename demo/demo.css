@@ -5,9 +5,8 @@ body {
 #sample-btn button {
     background-color: #ededed;
     border: 1px solid #bbbbbb;
-    font-size: 30px;
+    font-size: 15px;
     height: 50px;
-    width: 50px;
     cursor: pointer;
 }
 
@@ -17,6 +16,10 @@ body {
 }
 
 svg.dmak-svg {
-  border: 1px solid #CCCCCC;
-  margin-right: 1px;
+    border: 1px solid #CCCCCC;
+    margin-right: 1px;
+}
+
+#konnichiha, #sekai {
+    margin-top: 30px;
 }
