@@ -25,7 +25,7 @@
 		};
 
 		if (!this.options.skipLoad) {
-			var loader = new DmakLoader(this.options.uri),
+			var loader = new DmakLoader(this.options.uri, this.options.useIframe),
 				self = this;
 
 			loader.load(text, function (data) {
@@ -46,6 +46,7 @@
 
 	Dmak.default = {
 		uri: "",
+		useIframe: false,
 		skipLoad: false,
 		autoplay: true,
 		height: 109,
@@ -420,8 +421,9 @@
 	"use strict";
 
 	// Create a safe reference to the DrawMeAKanji object for use below.
-	var DmakLoader = function (uri) {
+	var DmakLoader = function (uri, useIframe) {
 		this.uri = uri;
+        this.useIframe = useIframe;
 	};
 
 	/**
@@ -434,6 +436,7 @@
 			nbChar = text.length,
 			done = 0,
 			i,
+            loadSvg,
 			callbacks = {
 				done: function (index, data) {
 					paths[index] = data;
@@ -447,6 +450,7 @@
 				}
 			};
 
+        loadSvg = this.useIframe ? loadSvgIframe : loadSvgXHR;
 		for (i = 0; i < nbChar; i++) {
 			loadSvg(this.uri, i, text.charCodeAt(i).toString(16), callbacks);
 		}
@@ -457,7 +461,7 @@
 	 * @thanks to the incredible work made by KanjiVG
 	 * @see: http://kanjivg.tagaini.net
 	 */
-	function loadSvg(uri, index, charCode, callbacks) {
+	function loadSvgXHR(uri, index, charCode, callbacks) {
 		var xhr = new XMLHttpRequest(),
 			code = ("00000" + charCode).slice(-5);
 
@@ -482,6 +486,50 @@
 		};
 		xhr.send();
 	}
+
+    function loadSvgIframe(uri, index, charCode, callbacks) {
+        var code, url, i, handler;
+
+        code = ("00000" + charCode).slice(-5);
+        url = uri + code + ".svg.html";
+
+        // Skip space character
+        if(code === "00020" || code === "03000") {
+                callbacks.done(index, {
+                        paths: [],
+                        texts: []
+                });
+                return;
+        }
+
+        handler = {};
+
+        // set handler for inter-frame messages
+        handler.messageHandler = function(event) {
+            if(event.data.name === code) {
+                clearTimeout(handler.errorTimeout);
+                event.target.removeEventListener(event.type, handler.messageHandler);
+                callbacks.done(index, parseResponse(event.data.data, code));
+            }
+        };
+
+        window.addEventListener("message", handler.messageHandler, false);
+
+        // create hidden iframe, that will later communicate and auto-remove
+        i = document.createElement("iframe");
+        i.style.display = "none";
+
+        i.onload = function() {
+            i.parentNode.removeChild(i);
+            handler.errorTimeout = setTimeout(function() {
+                window.addEventListener("message", handler.messageHandler, false);
+                callbacks.error("timeout hit loading iframe.");
+            }, 500);
+        };
+
+        i.src = url;
+        document.body.appendChild(i);
+    }
 
 	/**
 	 * Simple parser to extract paths and texts data.

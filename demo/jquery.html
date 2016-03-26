@@ -22,7 +22,7 @@
 	<script>
 		$(function () {
 			var dmak = $("#draw");
-			dmak.dmak('電車');
+			dmak.dmak('電車', {useIframe: true});
 			$("#sample-btn").find("button").on("click", function (e) {
 				e.preventDefault();
 				switch ($(this).attr("id")) {
