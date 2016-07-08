@@ -1,4 +1,4 @@
-# Draw Me A Kanji [![Build Status](https://travis-ci.org/mbilbille/dmak.png?branch=master)](https://travis-ci.org/mbilbille/dmak) [![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/mbilbille/dmak/trend.png)](https://bitdeli.com/free "Bitdeli Badge") [![Stories in Ready](https://badge.waffle.io/mbilbille/dmak.png?label=ready&title=Ready)](https://waffle.io/mbilbille/dmak)
+# Draw Me A Kanji [![Build Status](https://travis-ci.org/mbilbille/dmak.png?branch=master)](https://travis-ci.org/mbilbille/dmak) [![Stories in Ready](https://badge.waffle.io/mbilbille/dmak.png?label=ready&title=Ready)](https://waffle.io/mbilbille/dmak)
 
 > Render your Japanese writings with fun and taste
 
