@@ -17,7 +17,7 @@
 		};
 
 		if (!this.options.skipLoad) {
-			var loader = new DmakLoader(this.options.uri),
+			var loader = new DmakLoader(this.options.uri, this.options.useIframe),
 				self = this;
 
 			loader.load(text, function (data) {
@@ -38,6 +38,7 @@
 
 	Dmak.default = {
 		uri: "",
+		useIframe: false,
 		skipLoad: false,
 		autoplay: true,
 		height: 109,
